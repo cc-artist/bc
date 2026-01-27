@@ -1,0 +1,3 @@
+- 管理界面地址 ： http://localhost:3001/admin.html
+- 默认管理员账号 ：admin
+- 默认管理员密码 ：cyberbuddha202
