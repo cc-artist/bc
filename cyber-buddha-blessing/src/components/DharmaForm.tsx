@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
+import Image from 'next/image';
 
 const DharmaForm: React.FC = () => {
   const [selectedStyle, setSelectedStyle] = useState<string>('cyber');
@@ -130,22 +131,32 @@ const DharmaForm: React.FC = () => {
     }
   };
 
+  // Define types
+  interface Point {
+    x: number;
+    y: number;
+  }
+
+  interface ConstellationsMap {
+    [key: string]: Point[][];
+  }
+
   // Draw constellation
   const drawConstellation = (
     ctx: CanvasRenderingContext2D,
     width: number,
     height: number,
     type: string,
-    constellations: any
+    constellations: ConstellationsMap
   ) => {
-    const constellationList = constellations[type as keyof typeof constellations] || [];
+    const constellationList = constellations[type as keyof ConstellationsMap] || [];
     
-    constellationList.forEach((constellation: any) => {
+    constellationList.forEach((constellation: Point[]) => {
       ctx.save();
       ctx.beginPath();
       
       // Draw constellation lines
-      constellation.forEach((point: any, index: number) => {
+      constellation.forEach((point: Point, index: number) => {
         const x = point.x * width;
         const y = point.y * height;
         
@@ -162,7 +173,7 @@ const DharmaForm: React.FC = () => {
       ctx.stroke();
       
       // Draw constellation nodes
-      constellation.forEach((point: any) => {
+      constellation.forEach((point: Point) => {
         const x = point.x * width;
         const y = point.y * height;
         
@@ -192,8 +203,7 @@ const DharmaForm: React.FC = () => {
     ctx: CanvasRenderingContext2D,
     width: number,
     height: number,
-    decorations: string[],
-    style: string
+    decorations: string[]
   ) => {
     decorations.forEach((decoration) => {
       ctx.save();
@@ -504,7 +514,7 @@ const DharmaForm: React.FC = () => {
 
     // 绘制装饰元素
     if (config.decorations) {
-      drawDecorations(ctx, width, height, config.decorations, style);
+      drawDecorations(ctx, width, height, config.decorations); 
     }
 
     // 绘制增强版星星
@@ -742,10 +752,11 @@ const DharmaForm: React.FC = () => {
             <div className="border border-[#8676B6]/30 rounded-xl overflow-hidden bg-[#1D1D1F]/50 backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500">
               {/* Star Map Display */}
               <div className="relative w-full h-96 overflow-hidden">
-                <img
+                <Image
                   src={resultData.imageUrl}
                   alt="Generated Dharma Form"
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                 />
               </div>
             </div>

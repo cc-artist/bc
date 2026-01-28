@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const LampBlessing: React.FC = () => {
   const [isLit, setIsLit] = useState(false);
@@ -197,7 +197,7 @@ const LampBlessing: React.FC = () => {
           <div className="border border-[#8676B6]/30 rounded-xl p-8 bg-[#1D1D1F]/50 backdrop-blur-sm">
             <h3 className="text-lg font-medium mb-4 text-[#F5F5F7]">Your Wish</h3>
             <div className="bg-[#8676B6]/10 border border-[#8676B6]/30 rounded-xl p-6">
-              <p className="text-[#F5F5F7]/90 italic">"{wishResult}"</p>
+              <p className="text-[#F5F5F7]/90 italic">{`"${wishResult}"`}</p>
             </div>
             <div className="mt-6 text-center">
               <p className="text-[#FFD700] font-medium mb-2">Wish Delivered</p>
