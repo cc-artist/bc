@@ -1,5 +1,8 @@
 {
   "version": 2,
+  "buildCommand": "cd cyber-buddha-blessing && npm ci && npm run build",
+  "outputDirectory": "cyber-buddha-blessing/.next",
+  "installCommand": "cd cyber-buddha-blessing && npm ci",
   "builds": [
     {
       "src": "cyber-buddha-blessing/package.json",
@@ -11,5 +14,8 @@
       "src": "/(.*)",
       "dest": "/"
     }
-  ]
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  }
 }
