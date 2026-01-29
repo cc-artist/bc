@@ -2,9 +2,9 @@
 
 * **根目录配置**：确保Vercel部署时指定了正确的根目录`cyber-buddha-blessing`
 
-* **构建命令配置**：确保构建命令设置为`npm run build`
+* **构建命令配置**：确保构建命令设置为`cd cyber-buddha-blessing && npm run build`
 
-* **输出目录配置**：确保输出目录设置为`.next`
+* **输出目录配置**：确保输出目录设置为`cyber-buddha-blessing/.next`
 
 
 
