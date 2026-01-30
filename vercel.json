@@ -16,6 +16,13 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "NODE_OPTIONS": "--max-old-space-size=4096"
+  },
+  "install": {
+    "cache": true
+  },
+  "build": {
+    "cache": true
   }
 }
