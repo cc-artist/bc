@@ -108,3 +108,9 @@ dist
 .pnp.*
 
 # Embedded git repositories
+
+# Additional files to ignore
+.trae/
+ter
+ter --dry-run
+ter --force
