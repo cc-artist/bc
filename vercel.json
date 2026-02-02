@@ -1,15 +1,10 @@
 {
   "version": 2,
+  "rootDirectory": "cyber-buddha-blessing",
   "builds": [
     {
-      "src": "cyber-buddha-blessing/package.json",
+      "src": "package.json",
       "use": "@vercel/next"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/"
     }
   ],
   "env": {
