@@ -1,9 +1,11 @@
 {
   "version": 2,
-  "rootDirectory": "cyber-buddha-blessing",
+  "buildCommand": "cd cyber-buddha-blessing && npm run build",
+  "installCommand": "cd cyber-buddha-blessing && npm install",
+  "outputDirectory": "cyber-buddha-blessing/.next",
   "builds": [
     {
-      "src": "package.json",
+      "src": "cyber-buddha-blessing/package.json",
       "use": "@vercel/next"
     }
   ],
