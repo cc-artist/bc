@@ -1,7 +1,7 @@
 {
   "version": 2,
   "buildCommand": "cd cyber-buddha-blessing && npm run build",
-  "installCommand": "cd cyber-buddha-blessing && npm ci",
+  "installCommand": "cd cyber-buddha-blessing && npm install",
   "outputDirectory": "cyber-buddha-blessing/.next",
   "builds": [
     {
@@ -11,6 +11,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "NODE_OPTIONS": "--max-old-space-size=4096"
+    "NODE_OPTIONS": "--max-old-space-size=4096",
+    "NODE_VERSION": "20.x"
   }
 }
