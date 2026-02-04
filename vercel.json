@@ -1,12 +1,11 @@
 {
   "version": 2,
-  "buildCommand": "cd cyber-buddha-blessing && npm run build",
-  "installCommand": "cd cyber-buddha-blessing && npm install",
-  "outputDirectory": "cyber-buddha-blessing/.next",
+  "installCommand": "cd backend && npm install",
+  "buildCommand": "cd backend && npm run build",
   "builds": [
     {
-      "src": "cyber-buddha-blessing/package.json",
-      "use": "@vercel/next"
+      "src": "backend/src/server.js",
+      "use": "@vercel/node"
     }
   ],
   "env": {
