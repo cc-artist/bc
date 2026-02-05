@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "installCommand": "cd cyber-buddha-blessing && npm ci --legacy-peer-deps --no-lockfile",
+  "installCommand": "cd cyber-buddha-blessing && npm install --legacy-peer-deps --force",
   "buildCommand": "cd cyber-buddha-blessing && npm run build",
   "builds": [
     {
