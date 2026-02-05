@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "installCommand": "cd cyber-buddha-blessing && npm ci --legacy-peer-deps",
+  "buildCommand": "cd cyber-buddha-blessing && npm run build",
   "builds": [
     {
       "src": "cyber-buddha-blessing/package.json",
