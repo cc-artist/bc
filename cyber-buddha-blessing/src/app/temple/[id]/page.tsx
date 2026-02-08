@@ -60,10 +60,10 @@ export default function TempleDetailPage() {
       
       // 模拟成功响应
       console.log('[API] 咨询预约创建成功');
-      alert('咨询预约已提交，客服将在24小时内联系您！');
+      alert('Consultation request submitted, customer service will contact you within 24 hours!');
     } catch (error) {
       console.error('咨询预约失败:', error);
-      alert('咨询预约提交失败，请稍后重试');
+      alert('Consultation request failed, please try again later');
     } finally {
       setIsConsulting(false);
     }
@@ -100,10 +100,10 @@ export default function TempleDetailPage() {
       
       // 模拟成功响应
       console.log('[API] 支付成功');
-      alert('支付成功！您的定制行程已确认，我们将在3个工作日内发送详细行程安排到您的邮箱。');
+      alert('Payment successful! Your custom tour has been confirmed, we will send detailed itinerary to your email within 3 working days.');
     } catch (error) {
       console.error('支付失败:', error);
-      alert('支付失败，请稍后重试或联系客服');
+      alert('Payment failed, please try again later or contact customer service');
     } finally {
       setIsPaying(false);
     }
