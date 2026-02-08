@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "cyber-buddha-blessing/package.json",
-      "use": "@vercel/next"
-    }
-  ],
+  "scope": "cyber-buddha",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "outputDirectory": ".next",
+  "rootDirectory": "cyber-buddha-blessing",
+  "framework": "nextjs",
   "env": {
     "NODE_ENV": "production",
     "NODE_OPTIONS": "--max-old-space-size=4096",

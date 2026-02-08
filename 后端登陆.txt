@@ -12,7 +12,7 @@
 
 - 管理界面地址 ： http://localhost:3001/admin.html
 - 默认管理员账号 ：admin
-- 默认管理员密码 ：cyberbuddha2024
+- 默认管理员密码 ：cyberbuddha2024，password
 
 * **前端**：Next.js 应用，运行在端口 3000
 
