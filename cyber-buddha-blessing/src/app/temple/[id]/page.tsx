@@ -116,7 +116,7 @@ export default function TempleDetailPage() {
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <button 
             className="text-[#8676B6] hover:text-[#8676B6]/80 transition-colors duration-300" 
-            onClick={() => router.back()}
+            onClick={() => router.push('/')}
           >
             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
