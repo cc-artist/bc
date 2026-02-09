@@ -118,16 +118,14 @@ export default function Home() {
         </div>
 
         {/* Cyber Buddha Background */}
-        <div 
-          className="absolute inset-0 z-10 opacity-90"
-          style={{ 
-            backgroundImage: 'url(/temple-images/赛博佛祖背景图.png)',
-            backgroundSize: '100% auto',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center center',
-            minHeight: '100vh'
-          }}
-        ></div>
+        <div className="absolute inset-0 z-0 opacity-30">
+          <NextImage
+            src="/temple-images/赛博佛祖背景图.png"
+            alt="Cyber Buddha"
+            fill
+            className="object-cover"
+          />
+        </div>
 
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
           <h1 className="text-5xl md:text-7xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-[#F5F5F7] via-[#8676B6] to-[#FFD700] animate-pulse">
