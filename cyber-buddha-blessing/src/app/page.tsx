@@ -123,7 +123,7 @@ export default function Home() {
             src="/temple-images/赛博佛祖背景图.png"
             alt="Cyber Buddha"
             fill
-            className="object-cover"
+            className="object-contain"
           />
         </div>
 
