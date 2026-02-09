@@ -119,12 +119,16 @@ export default function Home() {
 
         {/* Cyber Buddha Background */}
         <div 
-          className="absolute inset-0 z-0 opacity-80"
+          className="absolute inset-0 z-0 opacity-90"
           style={{ 
-            backgroundImage: 'url(/temple-images/赛博佛祖背景图.png)',
-            backgroundSize: 'contain',
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center bottom'
+            backgroundImage: 'url(/temple-images/赛博佛祖背景图.png) !important',
+            backgroundSize: 'contain !important',
+            backgroundRepeat: 'no-repeat !important',
+            backgroundPosition: 'center bottom !important',
+            backgroundAttachment: 'fixed',
+            minHeight: '100vh',
+            border: '2px solid red',
+            backgroundColor: 'rgba(0, 0, 0, 0.1)'
           }}
         ></div>
 
