@@ -3,14 +3,16 @@
 import React from 'react';
 import NextImage from 'next/image';
 import { Temple } from '../data/TempleData';
+import ContactForm from './ContactForm';
 
 interface TempleDetailModalProps {
   temple: Temple | null;
   isOpen: boolean;
   onClose: () => void;
-  onConsultation: () => void;
   onPayment: () => void;
-  isConsulting?: boolean;
+  isContactFormOpen: boolean;
+  onOpenContactForm: () => void;
+  onCloseContactForm: () => void;
   isPaying?: boolean;
 }
 
@@ -18,9 +20,10 @@ const TempleDetailModal: React.FC<TempleDetailModalProps> = ({
   temple, 
   isOpen, 
   onClose, 
-  onConsultation,
   onPayment,
-  isConsulting = false,
+  isContactFormOpen,
+  onOpenContactForm,
+  onCloseContactForm,
   isPaying = false
 }) => {
   if (!temple || !isOpen) return null;
@@ -115,22 +118,15 @@ const TempleDetailModal: React.FC<TempleDetailModalProps> = ({
             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-[#8676B6]/30">
               <button
                 className="flex-1 bg-[#8676B6] text-white py-3 px-4 rounded-lg font-medium hover:bg-[#8676B6]/90 transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-[#8676B6]"
-                onClick={onConsultation}
-                disabled={isConsulting || isPaying}
+                onClick={onOpenContactForm}
+                disabled={isPaying || isContactFormOpen}
               >
-                {isConsulting ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Submitting...
-                  </div>
-                ) : (
-                  'Consult Customer Service to Book'
-                )}
+                Consult Customer Service to Book
               </button>
               <button
                 className="flex-1 bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] py-3 px-4 rounded-lg font-medium hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
                 onClick={onPayment}
-                disabled={isPaying || isConsulting}
+                disabled={isPaying || isContactFormOpen}
               >
                 {isPaying ? (
                   <div className="flex items-center justify-center gap-2">
@@ -145,6 +141,13 @@ const TempleDetailModal: React.FC<TempleDetailModalProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Contact Form Modal */}
+      <ContactForm
+        isOpen={isContactFormOpen}
+        onClose={onCloseContactForm}
+        templeName={temple.name}
+      />
     </div>
   );
 };

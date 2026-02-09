@@ -14,7 +14,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('blessing');
   const [audioPlaying, setAudioPlaying] = useState(true);
-  const [isConsulting, setIsConsulting] = useState(false);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
 
   const toggleAudio = () => {
@@ -34,36 +34,12 @@ export default function Home() {
     }, 300);
   };
 
-  const handleConsultation = async () => {
-    console.log('Consultation requested for:', selectedTemple?.name);
-    
-    // 防止重复提交
-    if (isConsulting) return;
-    
-    // 咨询客服预约行程 - 后端相关功能实现
-    try {
-      setIsConsulting(true);
-      
-      // 模拟 API 调用：创建咨询预约
-      console.log('[API] 创建咨询预约:', {
-        templeId: selectedTemple?.id,
-        templeName: selectedTemple?.name,
-        timestamp: new Date().toISOString(),
-        action: 'consultation_request'
-      });
-      
-      // 模拟网络延迟
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 模拟成功响应
-      console.log('[API] 咨询预约创建成功');
-      alert('Consultation request submitted, customer service will contact you within 24 hours!');
-    } catch (error) {
-      console.error('咨询预约失败:', error);
-      alert('Consultation request failed, please try again later');
-    } finally {
-      setIsConsulting(false);
-    }
+  const handleOpenContactForm = () => {
+    setIsContactFormOpen(true);
+  };
+
+  const handleCloseContactForm = () => {
+    setIsContactFormOpen(false);
   };
 
   const handlePayment = async () => {
@@ -259,9 +235,10 @@ export default function Home() {
         temple={selectedTemple} 
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
-        onConsultation={handleConsultation} 
         onPayment={handlePayment} 
-        isConsulting={isConsulting}
+        isContactFormOpen={isContactFormOpen}
+        onOpenContactForm={handleOpenContactForm}
+        onCloseContactForm={handleCloseContactForm}
         isPaying={isPaying}
       />
     </div>

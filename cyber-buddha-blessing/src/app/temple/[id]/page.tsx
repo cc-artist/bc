@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import NextImage from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
 import { temples, Temple } from '../../../data/TempleData';
+import ContactForm from '../../../components/ContactForm';
 
 export default function TempleDetailPage() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function TempleDetailPage() {
   const { id } = params;
   
   const [temple, setTemple] = useState<Temple | null>(null);
-  const [isConsulting, setIsConsulting] = useState(false);
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
   
   // 查找匹配的寺庙
@@ -38,35 +39,8 @@ export default function TempleDetailPage() {
     );
   }
   
-  const handleConsultation = async () => {
-    console.log('Consultation requested for:', temple.name);
-    
-    // 防止重复提交
-    if (isConsulting) return;
-    
-    try {
-      setIsConsulting(true);
-      
-      // 模拟 API 调用：创建咨询预约
-      console.log('[API] 创建咨询预约:', {
-        templeId: temple.id,
-        templeName: temple.name,
-        timestamp: new Date().toISOString(),
-        action: 'consultation_request'
-      });
-      
-      // 模拟网络延迟
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 模拟成功响应
-      console.log('[API] 咨询预约创建成功');
-      alert('Consultation request submitted, customer service will contact you within 24 hours!');
-    } catch (error) {
-      console.error('咨询预约失败:', error);
-      alert('Consultation request failed, please try again later');
-    } finally {
-      setIsConsulting(false);
-    }
+  const handleOpenContactForm = () => {
+    setIsContactFormOpen(true);
   };
   
   const handlePayment = async () => {
@@ -213,22 +187,15 @@ export default function TempleDetailPage() {
               <div className="space-y-3">
                 <button
                   className="w-full bg-[#8676B6] text-white py-4 px-6 rounded-lg font-medium hover:bg-[#8676B6]/90 transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-[#8676B6]"
-                  onClick={handleConsultation}
-                  disabled={isConsulting || isPaying}
+                  onClick={handleOpenContactForm}
+                  disabled={isPaying}
                 >
-                  {isConsulting ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      Submitting...
-                    </div>
-                  ) : (
-                    'Consult Customer Service to Book'
-                  )}
+                  Consult Customer Service to Book
                 </button>
                 <button
                   className="w-full bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] py-4 px-6 rounded-lg font-medium hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
                   onClick={handlePayment}
-                  disabled={isPaying || isConsulting}
+                  disabled={isPaying || isContactFormOpen}
                 >
                   {isPaying ? (
                     <div className="flex items-center justify-center gap-2">
@@ -287,6 +254,13 @@ export default function TempleDetailPage() {
           <p>© 2026 Cyber Buddha. All rights reserved.</p>
         </div>
       </footer>
+      
+      {/* Contact Form Modal */}
+      <ContactForm
+        isOpen={isContactFormOpen}
+        onClose={() => setIsContactFormOpen(false)}
+        templeName={temple.name}
+      />
     </div>
   );
 }
