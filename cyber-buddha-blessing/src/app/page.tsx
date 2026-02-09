@@ -124,6 +124,7 @@ export default function Home() {
             alt="Cyber Buddha"
             fill
             className="object-cover"
+            style={{ objectPosition: 'center bottom' }}
           />
         </div>
 
