@@ -1,6 +1,23 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+
+// PayPal SDK Script
+const PayPalSDK = () => {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = 'https://www.paypal.com/sdk/js?client-id=BAA9cxy8DYmUMqEob7eABEqPVGx86qxOdd-SK9ptm87tzEYmfPGVcUATLCNs7G3PeEtEh2WDEbXPwZ3ubA&components=hosted-buttons&disable-funding=venmo&currency=USD';
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+    
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+  
+  return null;
+};
 
 const LampBlessing: React.FC = () => {
   const [isLit, setIsLit] = useState(false);
@@ -167,21 +184,56 @@ const LampBlessing: React.FC = () => {
                 </div>
               )}
               
-              {/* Offer Oil Button */}
-              <button 
-                className="w-full bg-gradient-to-r from-[#FFD700] to-[#FF6B00] hover:opacity-90 text-white py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={handleOfferOil}
-                disabled={isOfferingOil}
-              >
-                {isOfferingOil ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Offering Oil...
-                  </div>
-                ) : (
-                  'Offer Oil (1 USD)'
-                )}
-              </button>
+              {/* Offer Oil Button with PayPal */}
+              <div className="w-full">
+                <PayPalSDK />
+                <div 
+                  className="w-full bg-gradient-to-r from-[#FFD700] to-[#FF6B00] hover:opacity-90 text-white py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
+                  onClick={() => {
+                    // Create PayPal hosted button element
+                    const buttonContainer = document.createElement('div');
+                    buttonContainer.innerHTML = `
+                      <div id="paypal-button-container-lamp"></div>
+                      <script>
+                        paypal.HostedButtons.render({
+                          hostedButtonId: 'your-hosted-button-id',
+                          createOrder: function(data, actions) {
+                            return actions.order.create({
+                              purchase_units: [{
+                                amount: {
+                                  value: '1.00'
+                                }
+                              }]
+                            });
+                          },
+                          onApprove: function(data, actions) {
+                            return actions.order.capture().then(function(details) {
+                              alert('Payment completed by ' + details.payer.name.given_name);
+                              // Call your backend API to record the payment
+                              fetch('http://localhost:3001/api/v1/payments', {
+                                method: 'POST',
+                                headers: {
+                                  'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                  name: '功德主',
+                                  phone: '13800138000',
+                                  templeId: 1,
+                                  amount: 100, // 1美金
+                                  paymentId: details.id
+                                }),
+                              });
+                            });
+                          }
+                        }, '#paypal-button-container-lamp');
+                      </script>
+                    `;
+                    document.body.appendChild(buttonContainer);
+                  }}
+                >
+                  Offer Oil (1 USD)
+                </div>
+              </div>
             </div>
           </div>
         )}
