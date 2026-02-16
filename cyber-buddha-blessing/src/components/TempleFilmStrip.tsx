@@ -40,32 +40,34 @@ const TempleFilmStrip: React.FC<TempleFilmStripProps> = ({ temples }) => {
 
   // Mouse/touch drag functionality
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!scrollContainerRef.current) return;
     setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current!.offsetLeft);
-    setScrollLeft(scrollContainerRef.current!.scrollLeft);
+    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
     setAutoScroll(false);
   };
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!scrollContainerRef.current) return;
     setIsDragging(true);
-    setStartX(e.touches[0].pageX - scrollContainerRef.current!.offsetLeft);
-    setScrollLeft(scrollContainerRef.current!.scrollLeft);
+    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
+    setScrollLeft(scrollContainerRef.current.scrollLeft);
     setAutoScroll(false);
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
+    if (!isDragging || !scrollContainerRef.current) return;
     e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current!.offsetLeft;
+    const x = e.pageX - scrollContainerRef.current.offsetLeft;
     const walk = (x - startX) * 2; // Scroll speed multiplier
-    scrollContainerRef.current!.scrollLeft = scrollLeft - walk;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
   const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-    const x = e.touches[0].pageX - scrollContainerRef.current!.offsetLeft;
+    if (!isDragging || !scrollContainerRef.current) return;
+    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
     const walk = (x - startX) * 2; // Scroll speed multiplier
-    scrollContainerRef.current!.scrollLeft = scrollLeft - walk;
+    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
   const handleMouseUp = () => setIsDragging(false);
