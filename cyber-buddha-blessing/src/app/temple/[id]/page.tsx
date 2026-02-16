@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import NextImage from 'next/image';
 import { useRouter, useParams } from 'next/navigation';
-import { temples, Temple } from '../../../data/TempleData';
+import { Temple, temples as staticTemples } from '../../../data/TempleData';
 import ContactForm from '../../../components/ContactForm';
 
 export default function TempleDetailPage() {
@@ -13,22 +13,52 @@ export default function TempleDetailPage() {
   
   const [temple, setTemple] = useState<Temple | null>(null);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   
-  // 查找匹配的寺庙
+  // 从API获取单个寺庙数据
   useEffect(() => {
-    if (id) {
-      const templeId = typeof id === 'string' ? parseInt(id) : Array.isArray(id) ? parseInt(id[0]) : 0;
-      const foundTemple = temples.find(t => t.id === templeId);
-      if (foundTemple) {
-        setTemple(foundTemple);
-      } else {
-        // 如果没有找到寺庙，重定向到首页
+    const fetchTemple = async () => {
+      setLoading(true);
+      
+      try {
+        let templeId: string;
+        if (typeof id === 'string') {
+          templeId = id;
+        } else if (Array.isArray(id) && id.length > 0) {
+          templeId = id[0];
+        } else {
+          throw new Error('Invalid temple id');
+        }
+        
+        const res = await fetch(`/api/public/temples/${templeId}`, {
+          cache: 'no-store'
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setTemple(data);
+        } else {
+          // 如果API请求失败，尝试从静态数据中查找
+          const staticTemple = staticTemples.find(t => t.id === parseInt(templeId));
+          if (staticTemple) {
+            setTemple(staticTemple);
+          } else {
+            router.push('/');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch temple:', error);
+        // 如果获取失败，重定向到首页
         router.push('/');
+      } finally {
+        setLoading(false);
       }
-    }
+    };
+    
+    fetchTemple();
   }, [id, router]);
   
-  if (!temple) {
+  if (loading || !temple) {
     return (
       <div className="min-h-screen bg-[#1D1D1F] flex items-center justify-center">
         <div className="text-[#F5F5F7]">
@@ -182,7 +212,7 @@ export default function TempleDetailPage() {
                     }
                   `}</style>
                   <form 
-                    action="https://www.paypal.com/ncp/payment/VJGYEAUJ7GH6L" 
+                    action={`${process.env.PAYPAL_PAYMENT_URL}VJGYEAUJ7GH6L`} 
                     method="post" 
                     target="_blank" 
                     className="w-full"

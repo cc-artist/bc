@@ -1,15 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NextImage from 'next/image';
 import TempleFilmStrip from '../components/TempleFilmStrip';
 import TempleDetailModal from '../components/TempleDetailModal';
 import Consecration from '../components/Consecration';
 import DharmaForm from '../components/DharmaForm';
 import LampBlessing from '../components/LampBlessing';
-import { temples, Temple } from '../data/TempleData';
+import { Temple, temples as staticTemples } from '../data/TempleData';
 
 export default function Home() {
+  const [temples, setTemples] = useState<Temple[]>(staticTemples);
+  
+  // 从API获取寺庙数据
+  useEffect(() => {
+    const fetchTemples = async () => {
+      try {
+        const res = await fetch('/api/public/temples', {
+          cache: 'no-store'
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          setTemples(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch temples:', error);
+        // 使用静态数据作为备选
+        setTemples(staticTemples);
+      }
+    };
+    
+    fetchTemples();
+  }, []);
+  
   const [selectedTemple, setSelectedTemple] = useState<Temple | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('blessing');
@@ -48,29 +72,21 @@ export default function Home() {
     // 防止重复提交
     if (isPaying) return;
     
-    // 支付1万美金订购行程 - 后端相关功能实现
     try {
       setIsPaying(true);
       
-      // 模拟 API 调用：创建支付订单
-      const paymentData = {
-        templeId: selectedTemple?.id,
-        templeName: selectedTemple?.name,
-        amount: 10000,
-        currency: 'USD',
-        description: `${selectedTemple?.name} 定制行程`,
-        timestamp: new Date().toISOString(),
-        action: 'payment_request'
-      };
+      // 获取支付配置
+      const paymentConfigRes = await fetch('http://localhost:3000/api/payment', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+      });
       
-      console.log('[API] 创建支付订单:', paymentData);
+      const paymentConfig = await paymentConfigRes.json();
       
-      // 模拟网络延迟
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // 模拟支付处理
-      console.log('[API] 正在处理支付...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // 这里可以添加实际的支付逻辑，使用安全的支付配置
+      console.log('[API] 支付配置:', paymentConfig);
       
       // 模拟成功响应
       console.log('[API] 支付成功');
