@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import NextImage from 'next/image';
+import { usePayPalButton } from '../hooks/usePayPalButton';
+
 
 const Consecration: React.FC = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
@@ -19,43 +21,13 @@ const Consecration: React.FC = () => {
   const [isOfferingOil, setIsOfferingOil] = useState(false);
   const [offeringStatus, setOfferingStatus] = useState<string | null>(null);
 
-  // Initialize PayPal button when component mounts
-  useEffect(() => {
-    // Function to initialize PayPal button with retry logic
-    const initPayPalButton = (retryCount = 0) => {
-      // Only execute in browser environment
-      if (typeof window !== 'undefined') {
-        try {
-          // Check if PayPal SDK is loaded
-          if (typeof (window as any).paypal !== 'undefined') {
-            // Check if container element exists
-            const container = document.getElementById("paypal-container-consecration");
-            if (container) {
-              (window as any).paypal.HostedButtons({
-                hostedButtonId: "KWCN3QN74N4X4",
-              }).render("#paypal-container-consecration");
-            }
-          } else if (retryCount < 10) {
-            // Try again in 500ms if SDK not loaded yet (only in browser), max 10 retries
-            const timeout = setTimeout(() => initPayPalButton(retryCount + 1), 500);
-            return () => clearTimeout(timeout);
-          }
-        } catch (error) {
-          console.error("Error initializing PayPal button:", error);
-          if (retryCount < 10) {
-            // Retry on error, max 10 retries
-            const timeout = setTimeout(() => initPayPalButton(retryCount + 1), 1000);
-            return () => clearTimeout(timeout);
-          }
-        }
-      }
-    };
-
-    // Initialize button only in browser environment
-    if (typeof window !== 'undefined') {
-      initPayPalButton();
-    }
-  }, []);
+  // Initialize PayPal button using custom hook
+  const { isLoading: isPayPalLoading, isLoaded: isPayPalLoaded, error: paypalError } = usePayPalButton({
+    hostedButtonId: "KWCN3QN74N4X4",
+    containerId: "paypal-container-consecration",
+    retryDelay: 500,
+    maxRetries: 10
+  });
 
 
   // 下载结果功能
@@ -571,6 +543,19 @@ const Consecration: React.FC = () => {
                     
                     {/* PayPal Hosted Button */}
                     <div id="paypal-container-consecration" className="w-full"></div>
+                    
+                    {/* PayPal Button Status */}
+                    {isPayPalLoading && (
+                      <div className="text-center mt-2 text-sm text-[#F5F5F7]/70">
+                        Loading PayPal button...
+                      </div>
+                    )}
+                    
+                    {paypalError && (
+                      <div className="mt-2 p-2 bg-red-500/20 text-red-300 text-sm rounded-lg">
+                        Error loading PayPal button: {paypalError}
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
