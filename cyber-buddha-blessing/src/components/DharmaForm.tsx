@@ -20,17 +20,33 @@ const DharmaForm: React.FC = () => {
 
   // Initialize PayPal button when component mounts
   useEffect(() => {
-    // Function to initialize PayPal button
-    const initPayPalButton = () => {
+    // Function to initialize PayPal button with retry logic
+    const initPayPalButton = (retryCount = 0) => {
       // Only execute in browser environment
-      if (typeof window !== 'undefined' && typeof (window as any).paypal !== 'undefined') {
-        (window as any).paypal.HostedButtons({
-          hostedButtonId: "KWCN3QN74N4X4",
-        }).render("#paypal-container-dharma");
-      } else if (typeof window !== 'undefined') {
-        // Try again in 500ms if SDK not loaded yet (only in browser)
-        const timeout = setTimeout(initPayPalButton, 500);
-        return () => clearTimeout(timeout);
+      if (typeof window !== 'undefined') {
+        try {
+          // Check if PayPal SDK is loaded
+          if (typeof (window as any).paypal !== 'undefined') {
+            // Check if container element exists
+            const container = document.getElementById("paypal-container-dharma");
+            if (container) {
+              (window as any).paypal.HostedButtons({
+                hostedButtonId: "KWCN3QN74N4X4",
+              }).render("#paypal-container-dharma");
+            }
+          } else if (retryCount < 10) {
+            // Try again in 500ms if SDK not loaded yet (only in browser), max 10 retries
+            const timeout = setTimeout(() => initPayPalButton(retryCount + 1), 500);
+            return () => clearTimeout(timeout);
+          }
+        } catch (error) {
+          console.error("Error initializing PayPal button:", error);
+          if (retryCount < 10) {
+            // Retry on error, max 10 retries
+            const timeout = setTimeout(() => initPayPalButton(retryCount + 1), 1000);
+            return () => clearTimeout(timeout);
+          }
+        }
       }
     };
 
