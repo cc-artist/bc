@@ -13,7 +13,6 @@ export default function TempleDetailPage() {
   
   const [temple, setTemple] = useState<Temple | null>(null);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
-  const [isPaying, setIsPaying] = useState(false);
   
   // 查找匹配的寺庙
   useEffect(() => {
@@ -41,46 +40,6 @@ export default function TempleDetailPage() {
   
   const handleOpenContactForm = () => {
     setIsContactFormOpen(true);
-  };
-  
-  const handlePayment = async () => {
-    console.log('Payment requested for:', temple.name);
-    
-    // 防止重复提交
-    if (isPaying) return;
-    
-    try {
-      setIsPaying(true);
-      
-      // 模拟 API 调用：创建支付订单
-      const paymentData = {
-        templeId: temple.id,
-        templeName: temple.name,
-        amount: 10000,
-        currency: 'USD',
-        description: `${temple.name} 定制行程`,
-        timestamp: new Date().toISOString(),
-        action: 'payment_request'
-      };
-      
-      console.log('[API] 创建支付订单:', paymentData);
-      
-      // 模拟网络延迟
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // 模拟支付处理
-      console.log('[API] 正在处理支付...');
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // 模拟成功响应
-      console.log('[API] 支付成功');
-      alert('Payment successful! Your custom tour has been confirmed, we will send detailed itinerary to your email within 3 working days.');
-    } catch (error) {
-      console.error('支付失败:', error);
-      alert('Payment failed, please try again later or contact customer service');
-    } finally {
-      setIsPaying(false);
-    }
   };
   
   return (
@@ -188,24 +147,68 @@ export default function TempleDetailPage() {
                 <button
                   className="w-full bg-[#8676B6] text-white py-4 px-6 rounded-lg font-medium hover:bg-[#8676B6]/90 transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-[#8676B6]"
                   onClick={handleOpenContactForm}
-                  disabled={isPaying}
+                  disabled={false}
                 >
                   Consult Customer Service to Book
                 </button>
-                <button
-                  className="w-full bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] py-4 px-6 rounded-lg font-medium hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 transition-colors duration-300 shadow-md hover:shadow-lg disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
-                  onClick={handlePayment}
-                  disabled={isPaying || isContactFormOpen}
-                >
-                  {isPaying ? (
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-5 h-5 border-2 border-[#1D1D1F]/30 border-t-[#1D1D1F] rounded-full animate-spin"></div>
-                      Processing Payment...
+                <div>
+                  <style jsx>{`
+                    .pp-VJGYEAUJ7GH6L {
+                      text-align: center;
+                      border: none;
+                      border-radius: 0.5rem;
+                      width: 100%;
+                      padding: 1rem 1.5rem;
+                      font-weight: medium;
+                      background: linear-gradient(to right, #FFD700, #FF6B00);
+                      color: #1D1D1F;
+                      font-family: inherit;
+                      font-size: 1rem;
+                      line-height: 1.25rem;
+                      cursor: pointer;
+                      transition: all 0.3s ease;
+                      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                    }
+                    
+                    .pp-VJGYEAUJ7GH6L:hover:not(:disabled) {
+                      background: linear-gradient(to right, rgba(255, 215, 0, 0.9), rgba(255, 107, 0, 0.9));
+                      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                    }
+                    
+                    .pp-VJGYEAUJ7GH6L:disabled {
+                      opacity: 0.7;
+                      cursor: not-allowed;
+                      background: linear-gradient(to right, #FFD700, #FF6B00);
+                    }
+                  `}</style>
+                  <form 
+                    action="https://www.paypal.com/ncp/payment/VJGYEAUJ7GH6L" 
+                    method="post" 
+                    target="_blank" 
+                    className="w-full"
+                  >
+                    <input 
+                      className="pp-VJGYEAUJ7GH6L"
+                      type="submit" 
+                      value="Pay $10,000 USD to Book" 
+                      disabled={isContactFormOpen}
+                    />
+                    <div className="flex justify-center items-center gap-1 mt-2">
+                      <img 
+                        src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" 
+                        alt="cards" 
+                        className="h-6"
+                      />
                     </div>
-                  ) : (
-                    'Pay $10,000 USD to Book'
-                  )}
-                </button>
+                    <div className="text-center text-xs text-[#F5F5F7]/50 mt-1">
+                      •// <img 
+                        src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" 
+                        alt="paypal" 
+                        style={{ height: '0.875rem', verticalAlign: 'middle' }}
+                      />
+                    </div>
+                  </form>
+                </div>
               </div>
               
               {/* Price Information */}
