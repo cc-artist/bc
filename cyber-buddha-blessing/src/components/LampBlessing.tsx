@@ -1,23 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-
-// PayPal SDK Script
-const PayPalSDK = () => {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://www.paypal.com/sdk/js?client-id=BAA9cxy8DYmUMqEob7eABEqPVGx86qxOdd-SK9ptm87tzEYmfPGVcUATLCNs7G3PeEtEh2WDEbXPwZ3ubA&components=hosted-buttons&disable-funding=venmo&currency=USD';
-    script.async = true;
-    script.defer = true;
-    document.body.appendChild(script);
-    
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-  
-  return null;
-};
+import React, { useState, useRef, useEffect } from 'react';
 
 const LampBlessing: React.FC = () => {
   const [isLit, setIsLit] = useState(false);
@@ -27,6 +10,25 @@ const LampBlessing: React.FC = () => {
   // 添香油支付状态
   const [isOfferingOil, setIsOfferingOil] = useState(false);
   const [offeringStatus, setOfferingStatus] = useState<string | null>(null);
+
+  // Initialize PayPal button when component mounts
+  useEffect(() => {
+    // Function to initialize PayPal button
+    const initPayPalButton = () => {
+      if (typeof (window as any).paypal !== 'undefined') {
+        (window as any).paypal.HostedButtons({
+          hostedButtonId: "KWCN3QN74N4X4",
+        }).render("#paypal-container-lamp");
+      } else {
+        // Try again in 500ms if SDK not loaded yet
+        const timeout = setTimeout(initPayPalButton, 500);
+        return () => clearTimeout(timeout);
+      }
+    };
+
+    // Initialize button
+    initPayPalButton();
+  }, []);
 
   const handleLightLamp = () => {
     setIsLit(true);
@@ -92,6 +94,8 @@ const LampBlessing: React.FC = () => {
       setIsOfferingOil(false);
     }
   };
+
+
 
   return (
     <div className="bg-[#1D1D1F] border border-[#8676B6]/30 rounded-xl p-6 shadow-lg">
@@ -184,55 +188,14 @@ const LampBlessing: React.FC = () => {
                 </div>
               )}
               
-              {/* Offer Oil Button with PayPal */}
-              <div className="w-full">
-                <PayPalSDK />
-                <div 
-                  className="w-full bg-gradient-to-r from-[#FFD700] to-[#FF6B00] hover:opacity-90 text-white py-3 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer"
-                  onClick={() => {
-                    // Create PayPal hosted button element
-                    const buttonContainer = document.createElement('div');
-                    buttonContainer.innerHTML = `
-                      <div id="paypal-button-container-lamp"></div>
-                      <script>
-                        paypal.HostedButtons.render({
-                          hostedButtonId: 'your-hosted-button-id',
-                          createOrder: function(data, actions) {
-                            return actions.order.create({
-                              purchase_units: [{
-                                amount: {
-                                  value: '1.00'
-                                }
-                              }]
-                            });
-                          },
-                          onApprove: function(data, actions) {
-                            return actions.order.capture().then(function(details) {
-                              alert('Payment completed by ' + details.payer.name.given_name);
-                              // Call your backend API to record the payment
-                              fetch('http://localhost:3001/api/v1/payments', {
-                                method: 'POST',
-                                headers: {
-                                  'Content-Type': 'application/json',
-                                },
-                                body: JSON.stringify({
-                                  name: '功德主',
-                                  phone: '13800138000',
-                                  templeId: 1,
-                                  amount: 100, // 1美金
-                                  paymentId: details.id
-                                }),
-                              });
-                            });
-                          }
-                        }, '#paypal-button-container-lamp');
-                      </script>
-                    `;
-                    document.body.appendChild(buttonContainer);
-                  }}
-                >
-                  Offer Oil (1 USD)
+              {/* Offer Oil Button */}
+              <div className="w-full mt-4">
+                <div className="text-center mb-2">
+                  <span className="text-[#F5F5F7]/80 font-medium">Support our temple with an offering</span>
                 </div>
+                
+                {/* PayPal Hosted Button */}
+                <div id="paypal-container-lamp" className="w-full"></div>
               </div>
             </div>
           </div>
