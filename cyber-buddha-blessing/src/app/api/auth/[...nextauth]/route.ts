@@ -1,11 +1,15 @@
-import NextAuth from 'next-auth';
+import NextAuth, { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
+// 确保NEXTAUTH_SECRET存在，否则生成一个默认值（仅用于开发环境）
+const NEXTAUTH_SECRET = process.env.NEXTAUTH_SECRET || 'default-secret-for-development-only';
 
 // 这里我们使用简单的密码认证，实际项目中应该从数据库获取管理员信息
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'admin@example.com';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 
-const handler = NextAuth({
+// 定义认证选项
+const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -46,13 +50,13 @@ const handler = NextAuth({
     signIn: '/admin/login',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         // 使用类型断言扩展session.user类型
         (session.user as any).id = token.id as string;
@@ -60,7 +64,10 @@ const handler = NextAuth({
       return session;
     },
   },
-  secret: process.env.NEXTAUTH_SECRET,
-});
+  secret: NEXTAUTH_SECRET,
+};
+
+// 导出NextAuth处理函数
+const handler = NextAuth(authOptions);
 
 export { handler as GET, handler as POST };
