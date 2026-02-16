@@ -2,7 +2,6 @@
 
 import React, { useState, useRef } from 'react';
 import NextImage from 'next/image';
-import { usePayPalButton } from '../hooks/usePayPalButton';
 
 
 const Consecration: React.FC = () => {
@@ -21,13 +20,6 @@ const Consecration: React.FC = () => {
   const [isOfferingOil, setIsOfferingOil] = useState(false);
   const [offeringStatus, setOfferingStatus] = useState<string | null>(null);
 
-  // Initialize PayPal button using custom hook
-  const { isLoading: isPayPalLoading, isLoaded: isPayPalLoaded, error: paypalError } = usePayPalButton({
-    hostedButtonId: "KWCN3QN74N4X4",
-    containerId: "paypal-container-consecration",
-    retryDelay: 500,
-    maxRetries: 10
-  });
 
 
   // 下载结果功能
@@ -538,24 +530,18 @@ const Consecration: React.FC = () => {
                   {/* Offer Oil Button */}
                   <div className="w-full mt-4">
                     <div className="text-center mb-2">
-                      <span className="text-[#F5F5F7]/80 font-medium">Support our temple with an offering</span>
+                      <span className="text-[#F5F5F7]/80 font-medium">Support us with an offering</span>
                     </div>
                     
-                    {/* PayPal Hosted Button */}
-                    <div id="paypal-container-consecration" className="w-full"></div>
-                    
-                    {/* PayPal Button Status */}
-                    {isPayPalLoading && (
-                      <div className="text-center mt-2 text-sm text-[#F5F5F7]/70">
-                        Loading PayPal button...
-                      </div>
-                    )}
-                    
-                    {paypalError && (
-                      <div className="mt-2 p-2 bg-red-500/20 text-red-300 text-sm rounded-lg">
-                        Error loading PayPal button: {paypalError}
-                      </div>
-                    )}
+                    {/* PayPal Button */}
+                    <div>
+                      <style>{`.pp-KWCN3QN74N4X4{text-align:center;border:none;border-radius:0.25rem;min-width:11.625rem;padding:0 2rem;height:2.625rem;font-weight:bold;background-color:#FFD140;color:#000000;font-family:Helvetica Neue,Arial,sans-serif;font-size:1rem;line-height:1.25rem;cursor:pointer;}`}</style>
+                      <form action="https://www.paypal.com/ncp/payment/KWCN3QN74N4X4" method="post" target="_blank" style={{display:'inline-grid',justifyItems:'center',alignContent:'start',gap:'0.5rem'}}>
+                        <input className="pp-KWCN3QN74N4X4" type="submit" value="Click to Pay" />
+                        <img src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" alt="cards" />
+                        <section style={{fontSize: '0.75rem'}}> •// <img src="https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-wordmark-color.svg" alt="paypal" style={{height:'0.875rem',verticalAlign:'middle'}}/></section>
+                      </form>
+                    </div>
                   </div>
                 </div>
               ) : (
