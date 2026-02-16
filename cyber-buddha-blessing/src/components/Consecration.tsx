@@ -23,19 +23,22 @@ const Consecration: React.FC = () => {
   useEffect(() => {
     // Function to initialize PayPal button
     const initPayPalButton = () => {
-      if (typeof (window as any).paypal !== 'undefined') {
+      // Only execute in browser environment
+      if (typeof window !== 'undefined' && typeof (window as any).paypal !== 'undefined') {
         (window as any).paypal.HostedButtons({
           hostedButtonId: "KWCN3QN74N4X4",
         }).render("#paypal-container-consecration");
-      } else {
-        // Try again in 500ms if SDK not loaded yet
+      } else if (typeof window !== 'undefined') {
+        // Try again in 500ms if SDK not loaded yet (only in browser)
         const timeout = setTimeout(initPayPalButton, 500);
         return () => clearTimeout(timeout);
       }
     };
 
-    // Initialize button
-    initPayPalButton();
+    // Initialize button only in browser environment
+    if (typeof window !== 'undefined') {
+      initPayPalButton();
+    }
   }, []);
 
 
