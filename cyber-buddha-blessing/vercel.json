@@ -6,58 +6,13 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": ".next",
-  "routes": [
-    {
-      "src": "/admin/login",
-      "dest": "/admin/login",
-      "methods": ["GET", "POST"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/admin",
-      "dest": "/admin",
-      "methods": ["GET"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/admin/(.*)",
-      "dest": "/admin/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/api/auth/(.*)",
-      "dest": "/api/auth/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-    }
-  ],
   "build": {
     "env": {
       "NODE_ENV": "production",
       "NEXTAUTH_SECRET": "your-secret-key-here",
       "NEXTAUTH_URL": "https://your-vercel-domain",
+      "ADMIN_EMAIL": "admin@example.com",
+      "ADMIN_PASSWORD": "admin123",
       "NEXT_PUBLIC_APP_URL": "https://your-vercel-domain"
     }
   },
