@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -9,7 +9,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [pageLoadTime, setPageLoadTime] = useState<number>(0);
   const router = useRouter();
+
+  // 记录页面加载时间
+  useEffect(() => {
+    const loadTime = performance.now();
+    setPageLoadTime(loadTime);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +48,25 @@ const LoginPage = () => {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Admin Login</h1>
           <p className="text-[#86868B]">Sign in to manage your temple booking system</p>
+        </div>
+
+        {/* 调试信息 */}
+        <div className="bg-[#1D1D1F]/50 rounded-lg p-4 mb-6 border border-[#48484A]">
+          <h3 className="text-sm font-medium text-[#8676B6] mb-2">Debug Information</h3>
+          <div className="grid grid-cols-2 gap-2 text-xs text-[#86868B]">
+            <div>
+              <span className="font-medium text-[#F5F5F7]">Environment:</span> {process.env.NODE_ENV || 'development'}
+            </div>
+            <div>
+              <span className="font-medium text-[#F5F5F7]">Page Load Time:</span> {pageLoadTime.toFixed(2)}ms
+            </div>
+            <div>
+              <span className="font-medium text-[#F5F5F7]">Next.js Version:</span> {process.env.NEXT_PUBLIC_NEXT_VERSION || 'unknown'}
+            </div>
+            <div>
+              <span className="font-medium text-[#F5F5F7]">Build Time:</span> {new Date().toLocaleString()}
+            </div>
+          </div>
         </div>
 
         {error && (
@@ -106,6 +132,10 @@ const LoginPage = () => {
           <p>Use the default credentials for testing:</p>
           <p className="mt-1">Email: admin@example.com</p>
           <p>Password: admin123</p>
+        </div>
+
+        <div className="mt-6 text-center text-xs text-[#6E6E73]">
+          <p>© {new Date().getFullYear()} Cyber Buddha Admin Panel</p>
         </div>
       </div>
     </div>
