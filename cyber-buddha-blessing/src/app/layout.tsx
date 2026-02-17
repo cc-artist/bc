@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
+import { SessionProviderClient } from "./providers/SessionProviderClient";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,7 +29,9 @@ export default function RootLayout({
         ></script>
       </head>
       <body className="antialiased">
-        <ErrorBoundary>{children}</ErrorBoundary>
+        <SessionProviderClient>
+          <ErrorBoundary>{children}</ErrorBoundary>
+        </SessionProviderClient>
       </body>
     </html>
   );
