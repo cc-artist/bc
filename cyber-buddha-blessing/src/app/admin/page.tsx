@@ -3,9 +3,20 @@ import { getSession } from '../../lib/auth';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
+// 明确告诉Next.js这个页面需要动态生成
+export const dynamic = 'force-dynamic';
+
 const AdminDashboard = async () => {
   // 检查管理员是否已登录
-  const session = await getSession();
+  let session = null;
+  let error = null;
+  
+  try {
+    session = await getSession();
+  } catch (err) {
+    error = err;
+  }
+  
   if (!session?.user) {
     redirect('/admin/login');
   }
@@ -32,6 +43,31 @@ const AdminDashboard = async () => {
 
       {/* 主内容 */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* 诊断信息 */}
+        <div className="bg-[#2C2C2E] rounded-2xl shadow-xl p-6 mb-8 border border-[#48484A]">
+          <h2 className="text-xl font-semibold text-white mb-4">Diagnostic Information</h2>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="bg-[#1D1D1F]/50 rounded-xl p-4">
+                <h3 className="text-[#86868B] text-sm mb-1">Environment</h3>
+                <p className="text-white">{process.env.NODE_ENV || 'development'}</p>
+              </div>
+              <div className="bg-[#1D1D1F]/50 rounded-xl p-4">
+                <h3 className="text-[#86868B] text-sm mb-1">NEXTAUTH_SECRET Available</h3>
+                <p className="text-white">{!!process.env.NEXTAUTH_SECRET ? 'Yes' : 'No'}</p>
+              </div>
+            </div>
+            <div className="bg-[#1D1D1F]/50 rounded-xl p-4">
+              <h3 className="text-[#86868B] text-sm mb-1">Session Status</h3>
+              <p className="text-white">{error ? `Error: ${error}` : 'Success'}</p>
+            </div>
+            <div className="bg-[#1D1D1F]/50 rounded-xl p-4">
+              <h3 className="text-[#86868B] text-sm mb-1">Session Data</h3>
+              <pre className="text-white text-sm overflow-x-auto">{JSON.stringify(session, null, 2)}</pre>
+            </div>
+          </div>
+        </div>
+        
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {/* 寺庙管理卡片 */}
           <Link
@@ -89,7 +125,7 @@ const AdminDashboard = async () => {
         </div>
 
         {/* 系统概览 */}
-        <div className="mt-8 bg-[#2C2C2E] rounded-2xl shadow-xl p-6 border border-[#48484A]">
+        <div className="bg-[#2C2C2E] rounded-2xl shadow-xl p-6 border border-[#48484A]">
           <h2 className="text-xl font-semibold text-white mb-4">System Overview</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-[#1D1D1F]/50 rounded-xl p-4">

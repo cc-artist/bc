@@ -67,15 +67,25 @@ export const authOptions: NextAuthOptions = {
   secret: NEXTAUTH_SECRET,
 };
 
-// 导出getServerSession函数，供其他组件使用
-export const getSession = () => getServerSession(authOptions);
+// 为App Router专门创建的getSession函数
+export const getAppSession = async () => {
+  try {
+    return await getServerSession(authOptions);
+  } catch (error) {
+    console.error('Error getting session:', error);
+    return null;
+  }
+};
+
+// 导出原始getSession函数，供其他组件使用
+export const getSession = getAppSession;
 
 export async function getCurrentUser() {
-  const session = await getSession();
+  const session = await getAppSession();
   return session?.user;
 }
 
 export async function isAdminAuthenticated() {
-  const session = await getSession();
+  const session = await getAppSession();
   return !!session?.user;
 }
