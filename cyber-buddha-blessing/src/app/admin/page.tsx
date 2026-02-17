@@ -1,9 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 
-// 明确告诉Next.js这个页面需要动态生成
-export const dynamic = 'force-dynamic';
-
 const AdminDashboard = async () => {
   // 简化版管理员页面，用于测试路由是否正常工作
   return (

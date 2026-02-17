@@ -4,9 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-// 确保动态导出设置在所有导入语句之后
-export const dynamic = 'force-dynamic';
-
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
