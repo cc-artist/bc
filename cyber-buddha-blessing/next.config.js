@@ -1,11 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // 确保Vercel正确处理动态路由
+  // 确保Vercel正确处理动态路由和客户端组件
+  output: 'standalone',
   experimental: {
-    // appDir在Next.js 14+中已默认启用，无需显式配置
+    // 确保构建过程能正确处理动态路由和客户端组件
+    serverActions: true,
   },
-  // 配置输出目录
-  distDir: '.next',
   // 配置静态资源处理
   staticPageGenerationTimeout: 100,
   // 配置构建时的环境变量
