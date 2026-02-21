@@ -1,5 +1,8 @@
 'use client';
 
+// 确保login页面也动态处理
+export const dynamic = 'force-dynamic';
+
 import React, { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
