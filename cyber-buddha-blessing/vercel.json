@@ -7,5 +7,23 @@
   "installCommand": "npm install",
   "outputDirectory": ".next",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "routes": [
+    {
+      "src": "/admin/login",
+      "dest": "/admin/login",
+      "methods": ["GET", "POST"],
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    },
+    {
+      "src": "/admin/(.*)",
+      "dest": "/admin/$1",
+      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+      "headers": {
+        "Cache-Control": "no-cache, no-store, must-revalidate"
+      }
+    }
+  ]
 }

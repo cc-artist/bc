@@ -80,6 +80,11 @@ export const getAppSession = async () => {
 // 导出原始getSession函数，供其他组件使用
 export const getSession = getAppSession;
 
+// 确保在App Router中正确获取会话
+export async function getServerSideSession() {
+  return await getServerSession(authOptions);
+};
+
 export async function getCurrentUser() {
   const session = await getAppSession();
   return session?.user;
