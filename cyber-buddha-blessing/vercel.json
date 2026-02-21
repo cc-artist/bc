@@ -1,5 +1,12 @@
 {
   "version": 2,
   "scope": "cyber-buddha",
-  "framework": "nextjs"
+  "framework": "nextjs",
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
 }
