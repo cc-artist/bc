@@ -7,44 +7,5 @@
   "installCommand": "npm install",
   "outputDirectory": ".next",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "redirects": [
-    {
-      "source": "/admin",
-      "destination": "/admin/",
-      "permanent": true
-    },
-    {
-      "source": "/admin/login/",
-      "destination": "/admin/login",
-      "permanent": true
-    }
-  ],
-  "routes": [
-    {
-      "src": "/admin/login",
-      "dest": "/admin/login",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "X-Frame-Options": "DENY",
-        "X-Content-Type-Options": "nosniff"
-      }
-    },
-    {
-      "src": "/admin/(.*)",
-      "dest": "/admin/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "X-Frame-Options": "DENY",
-        "X-Content-Type-Options": "nosniff"
-      }
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate",
-        "Access-Control-Allow-Origin": "*",
+  "trailingSlash": false
+}
