@@ -13,8 +13,6 @@ const nextConfig = {
   experimental: {
     // 提高动态路由的处理效率
     optimizePackageImports: ['next-auth', 'react', 'react-dom'],
-    // 确保App Router正常工作
-    appDir: true,
     // 启用服务器操作
     serverActions: {
       allowedOrigins: ['*'],
@@ -24,13 +22,6 @@ const nextConfig = {
   trailingSlash: false,
   // 确保客户端组件正确处理
   reactStrictMode: true,
-  // 配置构建时的环境变量
-  env: {
-    // 确保NEXT_PUBLIC_*环境变量在客户端可用
-    NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-    // NextAuth URL配置
-    NEXTAUTH_URL: process.env.NEXTAUTH_URL || 'http://localhost:3000',
-  },
 };
 
 export default nextConfig;
