@@ -1,29 +1,5 @@
 {
   "version": 2,
   "scope": "cyber-buddha",
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "devCommand": "npm run dev",
-  "installCommand": "npm install",
-  "outputDirectory": ".next",
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "routes": [
-    {
-      "src": "/admin/login",
-      "dest": "/admin/login",
-      "methods": ["GET", "POST"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    },
-    {
-      "src": "/admin/(.*)",
-      "dest": "/admin/$1",
-      "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-      "headers": {
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
-    }
-  ]
+  "framework": "nextjs"
 }
