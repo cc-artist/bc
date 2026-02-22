@@ -21,4 +21,7 @@ export const revalidate = 0;
 // Prevent Next.js from statically generating admin pages
 export const generateStaticParams = () => [];
 
+// Explicitly set runtime for server components
+export const runtime = 'nodejs';
+
 export default AdminLayout;
