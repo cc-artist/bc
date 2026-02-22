@@ -1,17 +1,24 @@
 import React from 'react';
 
+// Admin Layout Component for all admin routes
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
+    <div className="admin-layout">
       {children}
-    </>
+    </div>
   );
 };
 
-// 确保admin所有子路由都动态处理
+// Set dynamic rendering for all admin routes
 export const dynamic = 'force-dynamic';
 
-// 确保admin目录下的所有路由都使用动态渲染
+// Allow dynamic parameters for admin routes
 export const dynamicParams = true;
+
+// Disable static generation for all admin routes
+export const revalidate = 0;
+
+// Prevent Next.js from statically generating admin pages
+export const generateStaticParams = () => [];
 
 export default AdminLayout;

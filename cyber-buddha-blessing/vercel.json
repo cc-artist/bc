@@ -2,19 +2,6 @@
   "version": 2,
   "scope": "cyber-buddha",
   "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "outputDirectory": ".next",
   "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    {
-      "source": "/admin/login",
-      "destination": "/admin/login"
-    },
-    {
-      "source": "/admin/(.*)",
-      "destination": "/admin/$1"
-    }
-  ]
+  "trailingSlash": false
 }

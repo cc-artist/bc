@@ -1,11 +1,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-
-// 确保login页面也动态处理
-export const dynamic = 'force-dynamic';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+
+// Ensure login page uses dynamic rendering
+export const dynamic = 'force-dynamic';
+
+// Disable static generation
+export const revalidate = 0;
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');

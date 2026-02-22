@@ -1,7 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
+import { getAppSession } from '@/lib/auth';
 
 const AdminDashboard = async () => {
+  // 添加认证检查
+  const session = await getAppSession();
+  
+  if (!session?.user) {
+    redirect('/admin/login');
+  }
+  
   // 简化版管理员页面，用于测试路由是否正常工作
   return (
     <div className="min-h-screen bg-[#1D1D1F] text-[#F5F5F7]">
