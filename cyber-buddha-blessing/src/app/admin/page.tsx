@@ -1,16 +1,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { getAppSession } from '@/lib/auth';
+import { getAppSession } from '../../lib/auth';
 
 // Explicitly set runtime for server components
 export const runtime = 'nodejs';
 
 // Set dynamic rendering
 export const dynamic = 'force-dynamic';
-
-// Disable static generation
-export const revalidate = 0;
 
 const AdminDashboard = async () => {
   // 添加认证检查

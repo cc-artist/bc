@@ -15,9 +15,6 @@ export const dynamic = 'force-dynamic';
 // Allow dynamic parameters for admin routes
 export const dynamicParams = true;
 
-// Disable static generation for all admin routes
-export const revalidate = 0;
-
 // Prevent Next.js from statically generating admin pages
 export const generateStaticParams = () => [];
 
