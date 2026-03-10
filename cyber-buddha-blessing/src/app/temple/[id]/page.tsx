@@ -238,11 +238,13 @@ export default async function TempleDetailPage({ params }: { params: { id: strin
                 <ContactFormWrapper templeName={temple.name} />
                 <div>
                   <form 
-                    action={`${process.env.PAYPAL_PAYMENT_URL}VJGYEAUJ7GH6L`} 
+                    action="https://www.paypal.com/cgi-bin/webscr" 
                     method="post" 
                     target="_blank" 
                     className="w-full"
                   >
+                    <input type="hidden" name="cmd" value="_s-xclick" />
+                    <input type="hidden" name="hosted_button_id" value="VJGYEAUJ7GH6L" />
                     <input 
                       className="w-full text-center border-none rounded-lg px-6 py-4 font-medium bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] font-inherit text-base leading-5 cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
                       type="submit" 
