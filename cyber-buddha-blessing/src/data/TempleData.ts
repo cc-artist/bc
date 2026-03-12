@@ -210,7 +210,7 @@ export const temples: Temple[] = [
     location: "Mashan, Wuxi City, Jiangsu Province",
     title: "World's Tallest Bronze Sakyamuni Statue, Buddhist Cultural Theme Park",
     description: "Lingshan Grand Buddha is located in the beautiful Wuxi Mashan, north of Lingshan, south of Taihu Lake. It perfectly combines the long-standing Buddhist culture with the beautiful natural landscape. It is the most complete and the only Buddhist cultural theme park in China that focuses on displaying the achievements of Sakyamuni. The Lingshan Grand Buddha is the iconic landscape of Lingshan Scenic Area. The Lingshan Grand Buddha is 88 meters high and uses a total of 725 tons of copper. Together with the Tian Tan Buddha in Hong Kong in the south, the Leshan Giant Buddha in Sichuan in the west, the Yungang Giant Buddha in Shanxi in the north, and the Longmen Giant Buddha in Luoyang in Henan in the Central Plains, they are collectively known as the \"Five Buddhas in Five Directions of China\".",
-    image: "/temple-images/灵山大佛.webp",
+    image: "/temple-images/灵山大佛.jpg",
     features: [
       "World's tallest bronze Sakyamuni statue",
       "Complete Buddhist cultural theme park",
