@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import NextImage from 'next/image';
+import Script from 'next/script';
 import { redirect } from 'next/navigation';
 import { Temple, temples as staticTemples } from '../../../data/TempleData';
 import ContactFormWrapper from '../../../components/ContactFormWrapper';
@@ -247,15 +248,23 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
               <div className="space-y-3">
                 <ContactFormWrapper templeName={temple.name} />
                 <div>
-                  {/* Original PayPal Payment Button - Backup option */}
+                  {/* PayPal Standard Payment Button - Backup option */}
                   <form 
                     action="https://www.paypal.com/cgi-bin/webscr" 
                     method="post" 
                     target="_blank" 
                     className="w-full mb-4"
                   >
-                    <input type="hidden" name="cmd" value="_s-xclick" />
-                    <input type="hidden" name="hosted_button_id" value="VJGYEAUJ7GH6L" />
+                    <input type="hidden" name="cmd" value="_cart" />
+                    <input type="hidden" name="business" value="your-business-email@example.com" />
+                    <input type="hidden" name="lc" value="US" />
+                    <input type="hidden" name="item_name" value="Custom Tour Booking for ${temple.name}" />
+                    <input type="hidden" name="amount" value="10000.00" />
+                    <input type="hidden" name="currency_code" value="USD" />
+                    <input type="hidden" name="button_subtype" value="products" />
+                    <input type="hidden" name="no_note" value="1" />
+                    <input type="hidden" name="add" value="1" />
+                    <input type="hidden" name="bn" value="PP-ShopCartBF:btn_cart_LG.gif:NonHosted" />
                     <input 
                       className="w-full text-center border-none rounded-lg px-6 py-4 font-medium bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] font-inherit text-base leading-5 cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
                       type="submit" 
@@ -264,55 +273,28 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
                     />
                   </form>
                   
-                  {/* PayPal Smart Payment Button */}
-                  <div id="paypal-button-container" className="w-full mb-4"></div>
+                  {/* Simple PayPal Payment Link - Reliable backup option */}
+                  <div className="w-full text-center mt-4">
+                    <a 
+                      href={`https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=your-business-email@example.com&item_name=Custom+Tour+Booking+for+${encodeURIComponent(temple.name)}&amount=10000.00&currency_code=USD`} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="w-full inline-block text-center border-none rounded-lg px-6 py-4 font-medium bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] font-inherit text-base leading-5 cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
+                    >
+                      Pay $10,000 USD to Book
+                    </a>
+                  </div>
                   
-                  {/* PayPal SDK Initialization with proper error handling */}
-                  <script dangerouslySetInnerHTML={{ __html: `
-                    // Wait for PayPal SDK to load
-                    if (window.paypal) {
-                      renderPayPalButton();
-                    } else {
-                      // If SDK hasn't loaded yet, add an event listener
-                      window.addEventListener('paypal-sdk:ready', renderPayPalButton);
-                    }
-                    
-                    function renderPayPalButton() {
-                      try {
-                        window.paypal.Buttons({
-                          createOrder: function(data, actions) {
-                            // 设置订单详情
-                            return actions.order.create({
-                              purchase_units: [{
-                                amount: {
-                                  value: '10000.00', // 使用完整的金额格式
-                                  currency_code: 'USD'
-                                },
-                                description: 'Custom Tour Booking for ${temple.name}',
-                                custom_id: 'temple_${temple.id}'
-                              }]
-                            });
-                          },
-                          onApprove: function(data, actions) {
-                            // 捕获支付
-                            return actions.order.capture().then(function(details) {
-                              // 支付成功后的处理
-                              alert('Payment successful! Thank you for booking with Cyber Buddha.');
-                              console.log('Payment details:', details);
-                            });
-                          },
-                          onError: function(err) {
-                            // 支付错误处理
-                            console.error('PayPal error:', err);
-                            alert('Payment failed. Please try again or contact customer service. Error: ' + JSON.stringify(err));
-                          }
-                        }).render('#paypal-button-container');
-                      } catch (error) {
-                        console.error('Error rendering PayPal button:', error);
-                        document.getElementById('paypal-button-container').innerHTML = '';
-                      }
-                    }
-                  ` }} />
+                  {/* PayPal SDK Script */}
+                  <Script
+                    src="https://www.paypal.com/sdk/js?client-id=BAA9cxy8DYmUMqEob7eABEqPVGx86qxOdd-SK9ptm87tzEYmfPGVcUATLCNs7G3PeEtEh2WDEbXPwZ3ubA&disable-funding=venmo&currency=USD&intent=capture"
+                    onLoad={() => {
+                      console.log('PayPal SDK loaded successfully');
+                    }}
+                    onError={(e) => {
+                      console.error('Failed to load PayPal SDK:', e);
+                    }}
+                  />
                   
                   <div className="flex justify-center items-center gap-1 mt-2">
                     <img 
