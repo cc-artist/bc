@@ -1,10 +1,54 @@
-'use client';
-
-import React, { useState, useEffect } from 'react';
+import type { Metadata } from 'next';
+import React from 'react';
 import NextImage from 'next/image';
 import { redirect } from 'next/navigation';
 import { Temple, temples as staticTemples } from '../../../data/TempleData';
 import ContactFormWrapper from '../../../components/ContactFormWrapper';
+import SocialShare from '../../../components/SocialShare';
+
+// Generate dynamic metadata for each temple page
+export async function generateMetadata({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const temple = staticTemples.find(t => t.id === parseInt(id)) || null;
+  
+  if (!temple) {
+    return {
+      title: 'Cyber Buddha - Temple Not Found',
+      description: 'Cyber Buddha Consecration · Dharma Form · Lamp Blessing · Custom Tours of Famous Chinese Temples',
+    };
+  }
+  
+  const baseUrl = 'https://bc-drab.vercel.app';
+  const pageUrl = `${baseUrl}/temple/${temple.id}`;
+  const imageUrl = `${baseUrl}${temple.image.startsWith('/') ? temple.image : `/${temple.image}`}`;
+  
+  return {
+    title: `${temple.name} - Cyber Buddha`,
+    description: temple.description,
+    openGraph: {
+      title: `${temple.name} - Cyber Buddha`,
+      description: temple.description,
+      type: 'website',
+      url: pageUrl,
+      siteName: 'Cyber Buddha',
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: temple.name,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${temple.name} - Cyber Buddha`,
+      description: temple.description,
+      images: [imageUrl],
+      creator: '@cyberbuddha',
+    },
+  };
+}
 
 // Dynamic rendering for temple detail page
 export const dynamic = 'force-dynamic';
@@ -89,15 +133,15 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             '@context': 'https://schema.org',
             '@type': 'PlaceOfWorship',
-            '@id': `https://your-vercel-domain/temple/${temple.id}`,
+            '@id': `https://bc-drab.vercel.app/temple/${temple.id}`,
             name: temple.name,
             description: temple.description,
             address: {
               '@type': 'PostalAddress',
               addressLocality: temple.location,
             },
-            image: temple.image,
-            url: `https://your-vercel-domain/temple/${temple.id}`,
+            image: `https://bc-drab.vercel.app${temple.image.startsWith('/') ? temple.image : `/${temple.image}`}`,
+            url: `https://bc-drab.vercel.app/temple/${temple.id}`,
             additionalProperty: [
               {
                 '@type': 'PropertyValue',
@@ -318,6 +362,17 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
                   <span className="text-[#F5F5F7]/70">{temple.highlights[2]}</span>
                 </li>
               </ul>
+            </div>
+            
+            {/* Social Share */}
+            <div className="bg-[#1D1D1F]/50 border border-[#8676B6]/30 rounded-2xl p-6 shadow-lg">
+              <h3 className="text-xl font-semibold text-[#8676B6] mb-4">Share to Social Media</h3>
+              <SocialShare 
+                imageUrl={`https://bc-drab.vercel.app${temple.image.startsWith('/') ? temple.image : `/${temple.image}`}`}
+                title={temple.name}
+                description={temple.description}
+                pageUrl={`https://bc-drab.vercel.app/temple/${temple.id}`}
+              />
             </div>
           </div>
         </div>
