@@ -203,31 +203,51 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
               <div className="space-y-3">
                 <ContactFormWrapper templeName={temple.name} />
                 <div>
-                  <form 
-                    action="https://www.paypal.com/cgi-bin/webscr" 
-                    method="post" 
-                    target="_blank" 
-                    className="w-full"
-                  >
-                    <input type="hidden" name="cmd" value="_s-xclick" />
-                    <input type="hidden" name="hosted_button_id" value="VJGYEAUJ7GH6L" />
-                    <input 
-                      className="w-full text-center border-none rounded-lg px-6 py-4 font-medium bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] font-inherit text-base leading-5 cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
-                      type="submit" 
-                      value="Pay $10,000 USD to Book" 
-                      disabled={false}
+                  {/* PayPal Smart Payment Button */}
+                  <div id="paypal-button-container" className="w-full"></div>
+                  
+                  {/* PayPal SDK Initialization */}
+                  <script dangerouslySetInnerHTML={{ __html: `
+                    window.paypal.Buttons({
+                      createOrder: function(data, actions) {
+                        // 设置订单详情
+                        return actions.order.create({
+                          purchase_units: [{
+                            amount: {
+                              value: '10000',
+                              currency_code: 'USD'
+                            },
+                            description: 'Custom Tour Booking for ${temple.name}',
+                            custom_id: 'temple_${temple.id}'
+                          }]
+                        });
+                      },
+                      onApprove: function(data, actions) {
+                        // 捕获支付
+                        return actions.order.capture().then(function(details) {
+                          // 支付成功后的处理
+                          alert('Payment successful! Thank you for booking with Cyber Buddha.');
+                          console.log('Payment details:', details);
+                        });
+                      },
+                      onError: function(err) {
+                        // 支付错误处理
+                        console.error('PayPal error:', err);
+                        alert('Payment failed. Please try again or contact customer service.');
+                      }
+                    }).render('#paypal-button-container');
+                  ` }} />
+                  
+                  <div className="flex justify-center items-center gap-1 mt-2">
+                    <img 
+                      src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" 
+                      alt="cards" 
+                      className="h-6"
                     />
-                    <div className="flex justify-center items-center gap-1 mt-2">
-                      <img 
-                        src="https://www.paypalobjects.com/images/Debit_Credit_APM.svg" 
-                        alt="cards" 
-                        className="h-6"
-                      />
-                    </div>
-                    <div className="text-center text-xs text-[#F5F5F7]/50 mt-1">
-                      <span style={{ fontSize: '0.875rem', color: '#1a56db', fontWeight: 'bold' }}>PayPal</span>
-                    </div>
-                  </form>
+                  </div>
+                  <div className="text-center text-xs text-[#F5F5F7]/50 mt-1">
+                    <span style={{ fontSize: '0.875rem', color: '#1a56db', fontWeight: 'bold' }}>PayPal</span>
+                  </div>
                 </div>
               </div>
               
