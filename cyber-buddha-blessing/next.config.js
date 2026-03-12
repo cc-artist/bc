@@ -2,22 +2,27 @@
 const nextConfig = {
   staticPageGenerationTimeout: 120,
   images: {
+    // 允许本地图片加载
     unoptimized: false,
-    domains: ['localhost'],
+    // 移除可能导致问题的配置
+    contentDispositionType: 'inline',
+    contentSecurityPolicy: "default-src 'self'",
+    // 简化远程配置
     remotePatterns: [
       {
         protocol: 'http',
         hostname: 'localhost',
-        port: '3000',
         pathname: '/**',
       },
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3001',
+        protocol: 'https',
+        hostname: '**',
         pathname: '/**',
       },
     ],
+    dangerouslyAllowSVG: true,
+    // 允许本地图片域
+    domains: ['localhost'],
   },
   trailingSlash: false,
   reactStrictMode: true,

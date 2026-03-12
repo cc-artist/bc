@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import NextImage from 'next/image';
 import { redirect } from 'next/navigation';
 import { Temple, temples as staticTemples } from '../../../data/TempleData';
@@ -7,46 +9,7 @@ import ContactFormWrapper from '../../../components/ContactFormWrapper';
 // Dynamic rendering for temple detail page
 export const dynamic = 'force-dynamic';
 
-// Generate metadata based on temple data
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  let templeId: string;
-  if (typeof params.id === 'string') {
-    templeId = params.id;
-  } else {
-    templeId = '0';
-  }
-  
-  const temple = staticTemples.find(t => t.id === parseInt(templeId));
-  
-  if (!temple) {
-    return {
-      title: 'Temple Not Found | Cyber Buddha',
-      description: 'The requested temple could not be found.',
-    };
-  }
-  
-  return {
-    title: `${temple.name} | Cyber Buddha`,
-    description: temple.description,
-    keywords: ['Cyber Buddha', 'Temple Tour', temple.name, temple.location, 'Zen Experience'],
-    openGraph: {
-      title: `${temple.name} | Cyber Buddha`,
-      description: temple.description,
-      type: 'website',
-      url: `https://your-vercel-domain/temple/${temple.id}`,
-      images: [
-        {
-          url: temple.image,
-          width: 1200,
-          height: 630,
-          alt: temple.name,
-        },
-      ],
-    },
-  };
-};
-
-export default async function TempleDetailPage({ params }: { params: { id: string } }) {
+export default function TempleDetailPage({ params }: { params: { id: string } }) {
   const { id } = params;
   
   let templeId: string;
@@ -156,13 +119,16 @@ export default async function TempleDetailPage({ params }: { params: { id: strin
           })}}
         />
         {/* Temple Image and Basic Information */}
-        <div className="relative w-full h-[500px] mb-8 rounded-2xl overflow-hidden shadow-2xl">
+        <div 
+          className="relative w-full h-[500px] mb-8 rounded-2xl overflow-hidden shadow-2xl"
+        >
           <NextImage
             src={temple.image}
             alt={temple.name}
             fill
             className="object-cover"
           />
+          {/* Gradient overlay and text content */}
           <div className="absolute inset-0 bg-gradient-to-t from-[#1D1D1F]/90 via-[#1D1D1F]/30 to-transparent"></div>
           <div className="absolute bottom-0 left-0 p-8">
             <h2 className="text-4xl font-bold mb-2">{temple.name}</h2>

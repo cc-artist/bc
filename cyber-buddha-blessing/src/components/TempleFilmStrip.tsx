@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import NextImage from 'next/image';
 import Link from 'next/link';
 import { Temple } from '../data/TempleData';
@@ -11,130 +11,63 @@ interface TempleFilmStripProps {
 }
 
 const TempleFilmStrip: React.FC<TempleFilmStripProps> = ({ temples }) => {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [startX, setStartX] = useState(0);
-  const [scrollLeft, setScrollLeft] = useState(0);
-  const [autoScroll, setAutoScroll] = useState(true);
-  const [mouseX, setMouseX] = useState(0);
-  const [isMouseOver, setIsMouseOver] = useState(false);
-
-  // Handle mouse movement for direction-based scrolling
-  const handleMouseMoveGlobal = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!scrollContainerRef.current) return;
-    setMouseX(e.clientX);
-  };
-
-  // Handle mouse enter/leave for stopping scrolling
-  const handleMouseEnter = () => {
-    setIsMouseOver(true);
-  };
-
-  const handleMouseLeave = () => {
-    setIsMouseOver(false);
-    setIsDragging(false);
-  };
-
-  // Direction-based scroll functionality
-  useEffect(() => {
-    if (!scrollContainerRef.current || isMouseOver || isDragging) return;
-
-    const scrollContainer = scrollContainerRef.current;
-    const interval = 30;
-    
-    // Calculate scroll direction and speed based on mouse position
-    const calculateScrollSpeed = () => {
-      const containerRect = scrollContainer.getBoundingClientRect();
-      const containerCenter = containerRect.left + containerRect.width / 2;
-      const mouseDistanceFromCenter = mouseX - containerCenter;
-      
-      // Mouse is on the left side - scroll right (positive direction)
-      // Mouse is on the right side - scroll left (negative direction)
-      // Speed increases as mouse moves further from center
-      const maxSpeed = 1.5;
-      const speed = (mouseDistanceFromCenter / containerCenter) * maxSpeed;
-      
-      return speed;
-    };
-
-    const scroll = () => {
-      const speed = calculateScrollSpeed();
-      
-      // Reverse the direction as requested
-      const reversedSpeed = -speed;
-      
-      scrollContainer.scrollLeft += reversedSpeed;
-      
-      // Loop the scroll
-      if (scrollContainer.scrollLeft <= 0) {
-        scrollContainer.scrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-      } else if (scrollContainer.scrollLeft >= scrollContainer.scrollWidth - scrollContainer.clientWidth) {
-        scrollContainer.scrollLeft = 0;
-      }
-    };
-
-    const scrollInterval = setInterval(scroll, interval);
-
-    return () => clearInterval(scrollInterval);
-  }, [mouseX, isMouseOver, isDragging]);
-
-  // Mouse/touch drag functionality
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-  };
-
-  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!scrollContainerRef.current) return;
-    setIsDragging(true);
-    setStartX(e.touches[0].pageX - scrollContainerRef.current.offsetLeft);
-    setScrollLeft(scrollContainerRef.current.scrollLeft);
-  };
-
+  // 反向互动效果状态
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  
+  // 鼠标移动事件处理 - 基于鼠标位置相对于屏幕中心的反向互动
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !scrollContainerRef.current) return;
+    setMousePosition({ x: e.clientX, y: e.clientY });
+  };
+  
+  // 基于鼠标位置计算反向滚动
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    // 计算屏幕中心
+    const centerX = window.innerWidth / 2;
+    
+    // 计算鼠标相对于屏幕中心的偏移比例
+    const offsetRatio = (mousePosition.x - centerX) / centerX;
+    
+    // 应用反向滑动：鼠标在屏幕右侧 → 卡片向左滑动；鼠标在屏幕左侧 → 卡片向右滑动
+    const intensity = 150; // 效果强度，数值越大效果越明显
+    const targetScroll = offsetRatio * intensity;
+    
+    // 获取当前滚动位置
+    const container = containerRef.current;
+    const totalScrollWidth = container.scrollWidth - container.clientWidth;
+    
+    // 计算新的滚动位置，确保在合理范围内
+    const newScrollLeft = Math.max(0, Math.min(totalScrollWidth, container.scrollLeft + targetScroll * 0.1));
+    
+    // 平滑滚动
+    container.scrollLeft = newScrollLeft;
+  }, [mousePosition]);
+  
+  // 禁用默认的拖拽行为
+  const handleDragStart = (e: React.DragEvent) => {
     e.preventDefault();
-    const x = e.pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
   };
-
-  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>) => {
-    if (!isDragging || !scrollContainerRef.current) return;
-    const x = e.touches[0].pageX - scrollContainerRef.current.offsetLeft;
-    const walk = (x - startX) * 2; // Scroll speed multiplier
-    scrollContainerRef.current.scrollLeft = scrollLeft - walk;
-  };
-
-  const handleMouseUp = () => setIsDragging(false);
-
-  const handleTouchEnd = () => setIsDragging(false);
-
+  
   return (
     <div className="relative w-full overflow-hidden py-8">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
       <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-50"></div>
       
       <div
-        ref={scrollContainerRef}
-        className="flex items-center gap-6 px-4 overflow-x-auto scroll-smooth scrollbar-hide"
+        ref={containerRef}
+        className="flex items-center gap-6 px-4 overflow-x-auto scrollbar-hide"
         style={{
           scrollbarWidth: 'none',
-          msOverflowStyle: 'none'
+          msOverflowStyle: 'none',
+          // 添加硬件加速，减少闪烁
+          transform: 'translateZ(0)',
+          backfaceVisibility: 'hidden',
+          perspective: '1000px'
         }}
-        onMouseDown={handleMouseDown}
-        onMouseMove={(e) => {
-          handleMouseMove(e);
-          handleMouseMoveGlobal(e);
-        }}
-        onMouseUp={handleMouseUp}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onTouchStart={handleTouchStart}
-        onTouchMove={handleTouchMove}
-        onTouchEnd={handleTouchEnd}
+        onMouseMove={handleMouseMove}
+        onDragStart={handleDragStart}
       >
         {temples.map((temple) => (
           <Link
@@ -171,18 +104,6 @@ const TempleFilmStrip: React.FC<TempleFilmStripProps> = ({ temples }) => {
             </div>
           </Link>
         ))}
-      </div>
-      
-      <div className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-md cursor-pointer hover:bg-white transition-colors duration-300">
-        <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </div>
-      
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 backdrop-blur-sm p-2 rounded-full shadow-md cursor-pointer hover:bg-white transition-colors duration-300">
-        <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-        </svg>
       </div>
     </div>
   );

@@ -40,14 +40,8 @@ export default function Home() {
   const [selectedTemple, setSelectedTemple] = useState<Temple | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('blessing');
-  const [audioPlaying, setAudioPlaying] = useState(true);
   const [isContactFormOpen, setIsContactFormOpen] = useState(false);
   const [isPaying, setIsPaying] = useState(false);
-
-  const toggleAudio = () => {
-    setAudioPlaying(!audioPlaying);
-    // 这里可以添加音频控制逻辑
-  };
 
   const handleTempleClick = (temple: Temple) => {
     setSelectedTemple(temple);
@@ -104,28 +98,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#1D1D1F] text-[#F5F5F7] font-sans overflow-x-hidden">
-      {/* 背景音乐控制 */}
-      <button
-        className="fixed top-4 right-4 bg-[#8676B6]/20 backdrop-blur-sm p-2 rounded-full shadow-lg hover:bg-[#8676B6]/30 transition-all duration-300 z-50"
-        onClick={toggleAudio}
-        aria-label={audioPlaying ? '暂停音乐' : '播放音乐'}
-      >
-        <svg
-          className={`w-6 h-6 text-[#8676B6] transition-all duration-300 ${audioPlaying ? 'animate-pulse' : ''}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          {audioPlaying ? (
-            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-          ) : (
-            <path
-              fillRule="evenodd"
-              d="M6 2a.75.75 0 01.75.75v12.5c0 .414-.336.75-.75.75A.75.75 0 015 15.25v-12.5A.75.75 0 016 2zm4.5 0A.75.75 0 0111.25 2.75v12.5c0 .414-.336.75-.75.75a.75.75 0 01-.75-.75v-12.5A.75.75 0 0110.5 2z"
-              clipRule="evenodd"
-            />
-          )}
-        </svg>
-      </button>
+
 
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
