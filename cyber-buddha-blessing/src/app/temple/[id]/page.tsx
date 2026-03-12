@@ -203,8 +203,25 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
               <div className="space-y-3">
                 <ContactFormWrapper templeName={temple.name} />
                 <div>
+                  {/* Original PayPal Payment Button - Backup option */}
+                  <form 
+                    action="https://www.paypal.com/cgi-bin/webscr" 
+                    method="post" 
+                    target="_blank" 
+                    className="w-full mb-4"
+                  >
+                    <input type="hidden" name="cmd" value="_s-xclick" />
+                    <input type="hidden" name="hosted_button_id" value="VJGYEAUJ7GH6L" />
+                    <input 
+                      className="w-full text-center border-none rounded-lg px-6 py-4 font-medium bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] font-inherit text-base leading-5 cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
+                      type="submit" 
+                      value="Pay $10,000 USD to Book" 
+                      disabled={false}
+                    />
+                  </form>
+                  
                   {/* PayPal Smart Payment Button */}
-                  <div id="paypal-button-container" className="w-full"></div>
+                  <div id="paypal-button-container" className="w-full mb-4"></div>
                   
                   {/* PayPal SDK Initialization with proper error handling */}
                   <script dangerouslySetInnerHTML={{ __html: `
@@ -248,10 +265,7 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
                         }).render('#paypal-button-container');
                       } catch (error) {
                         console.error('Error rendering PayPal button:', error);
-                        document.getElementById('paypal-button-container').innerHTML = 
-                          '<div class="w-full bg-[#1D1D1F] border border-[#8676B6]/30 rounded-lg px-6 py-4 text-center text-[#F5F5F7]/70">
-                            <p>Payment service temporarily unavailable. Please contact customer service to book.</p>
-                          </div>';
+                        document.getElementById('paypal-button-container').innerHTML = '';
                       }
                     }
                   ` }} />
