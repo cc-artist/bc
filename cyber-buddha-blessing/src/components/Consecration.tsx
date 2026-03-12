@@ -304,7 +304,7 @@ const Consecration: React.FC = () => {
     setOfferingStatus('正在处理添香油支付...');
 
     try {
-      const response = await fetch('http://localhost:3001/api/v1/payments', {
+      const response = await fetch('/api/v1/payments', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

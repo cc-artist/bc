@@ -73,7 +73,7 @@ export default function Home() {
       setIsPaying(true);
       
       // 获取支付配置
-      const paymentConfigRes = await fetch('http://localhost:3000/api/payment', {
+      const paymentConfigRes = await fetch('/api/payment', {
         headers: {
           'Content-Type': 'application/json',
         },

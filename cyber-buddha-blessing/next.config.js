@@ -21,8 +21,8 @@ const nextConfig = {
       },
     ],
     dangerouslyAllowSVG: true,
-    // 允许本地图片域
-    domains: ['localhost'],
+    // 允许本地图片
+    unoptimized: false,
   },
   trailingSlash: false,
   reactStrictMode: true,
