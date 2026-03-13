@@ -415,7 +415,7 @@
                 </div>
                 <div class="flex flex-wrap gap-3 mr-4">
                     <button class="payment-platform-filter bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm transition-all" data-platform="all">所有平台</button>
-                    <button class="payment-platform-filter bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm transition-all" data-platform="paypal">PayPal</button>
+                    <button class="payment-platform-filter bg-white/10 hover:bg-white/20 text-blue-600 px-4 py-2 rounded-lg text-sm transition-all" data-platform="paypal">PayPal</button>
                     <button class="payment-platform-filter bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm transition-all" data-platform="pingpong">PingPong</button>
                     <button class="payment-platform-filter bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg text-sm transition-all" data-platform="unknown">未知平台</button>
                 </div>
@@ -1099,11 +1099,14 @@
             // Initialize event listeners
             initEventListeners();
             
-            // Set payment data
-            paymentData = mockPayments;
+            // Initialize payment data as empty array
+            window.paymentData = [];
             
-            // Render payment table
+            // Render empty payment table
             renderPaymentTable();
+            
+            // Fetch real data
+            fetchData();
         }
 
         // Check login status from localStorage
@@ -1648,7 +1651,7 @@
                 };
                 
                 const platformClass = {
-                    paypal: 'bg-blue-500/30 text-blue-200',
+                    paypal: 'bg-blue-500/30 text-blue-600',
                     pingpong: 'bg-green-500/30 text-green-200',
                     unknown: 'bg-gray-500/30 text-gray-200'
                 };
@@ -2135,7 +2138,7 @@
                 };
                 
                 const platformClass = {
-                    paypal: 'bg-blue-500/30 text-blue-200',
+                    paypal: 'bg-blue-500/30 text-blue-600',
                     pingpong: 'bg-green-500/30 text-green-200',
                     unknown: 'bg-gray-500/30 text-gray-200'
                 };
@@ -2198,10 +2201,20 @@
                 const dashboardResponse = await fetch('/api/admin/dashboard');
                 const dashboardData = await dashboardResponse.json();
                 
+                // Fetch payment data from API
+                const paymentsResponse = await fetch('/api/admin/payments');
+                const paymentsData = await paymentsResponse.json();
+                
+                // Update payment data with real API data
+                window.paymentData = paymentsData.payments || [];
+                
                 // Update statistics cards with real data
                 updateStatistics(dashboardData);
                 
-                console.log('数据获取成功:', dashboardData);
+                // Re-render payment table with real data
+                renderPaymentTable();
+                
+                console.log('数据获取成功:', { dashboardData, paymentsData });
             } catch (error) {
                 console.error('数据获取失败:', error);
                 // Fallback to mock data if API fails
