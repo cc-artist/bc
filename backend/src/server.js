@@ -173,10 +173,10 @@ app.get('/api/admin/payments', async (req, res) => {
   try {
     const payments = await Payment.find();
     res.status(200).json({
-      payments: payments.length > 0 ? payments : mockData.payments,
-      totalCount: payments.length || mockData.payments.length,
-      totalRevenue: payments.reduce((sum, payment) => sum + payment.amount, 0) || mockData.payments.reduce((sum, payment) => sum + payment.amount, 0),
-      completedCount: payments.filter(payment => payment.status === 'completed').length || mockData.payments.filter(payment => payment.status === 'completed').length
+      payments: payments,
+      totalCount: payments.length,
+      totalRevenue: payments.reduce((sum, payment) => sum + payment.amount, 0),
+      completedCount: payments.filter(payment => payment.status === 'completed').length
     });
   } catch (error) {
     console.error('Error getting payments data from MongoDB, using mock data:', error.message);
@@ -198,23 +198,11 @@ app.get('/api/admin/payments/:id', async (req, res) => {
     if (payment) {
       res.status(200).json(payment);
     } else {
-      // Find in mock data
-      const mockPayment = mockData.payments.find(p => p.id === id);
-      if (mockPayment) {
-        res.status(200).json(mockPayment);
-      } else {
-        res.status(404).json({ error: 'Payment not found' });
-      }
-    }
-  } catch (error) {
-    console.error('Error getting payment data from MongoDB, using mock data:', error.message);
-    // Find in mock data
-    const mockPayment = mockData.payments.find(p => p.id === id);
-    if (mockPayment) {
-      res.status(200).json(mockPayment);
-    } else {
       res.status(404).json({ error: 'Payment not found' });
     }
+  } catch (error) {
+    console.error('Error getting payment data from MongoDB:', error.message);
+    res.status(404).json({ error: 'Payment not found' });
   }
 });
 
@@ -231,20 +219,21 @@ app.get('/api/admin/dashboard', async (req, res) => {
     const payments = await Payment.find();
     const apiDocs = await APIDocument.find();
 
+    // Return real data regardless of whether it's empty
     res.status(200).json({
-      status: status || mockData.serviceStatus,
-      blessing: blessing || mockData.blessing,
-      templeCount: temples.length || mockData.temples.length,
-      activeTempleCount: temples.filter(temple => temple.isActive).length || mockData.temples.filter(temple => temple.isActive).length,
-      consultationCount: consultations.length || mockData.consultations.length,
-      pendingConsultationCount: consultations.filter(consult => consult.status === 'pending').length || mockData.consultations.filter(consult => consult.status === 'pending').length,
-      paymentCount: payments.length || mockData.payments.length,
-      totalRevenue: payments.reduce((sum, payment) => sum + payment.amount, 0) || mockData.payments.reduce((sum, payment) => sum + payment.amount, 0),
-      apiDocsCount: apiDocs.length || mockData.apiDocs.length
+      status: status,
+      blessing: blessing,
+      templeCount: temples.length,
+      activeTempleCount: temples.filter(temple => temple.isActive).length,
+      consultationCount: consultations.length,
+      pendingConsultationCount: consultations.filter(consult => consult.status === 'pending').length,
+      paymentCount: payments.length,
+      totalRevenue: payments.reduce((sum, payment) => sum + payment.amount, 0),
+      apiDocsCount: apiDocs.length
     });
   } catch (error) {
     console.error('Error getting dashboard data from MongoDB, using mock data:', error.message);
-    // Return mock data if MongoDB is unavailable
+    // Return mock data only if MongoDB is unavailable
     res.status(200).json({
       status: mockData.serviceStatus,
       blessing: mockData.blessing,
@@ -271,6 +260,7 @@ app.get('/api/admin/status', async (req, res) => {
     res.status(200).json(status);
   } catch (error) {
     console.error('Error getting system status from MongoDB, using mock data:', error.message);
+    // Return mock data only if MongoDB is unavailable
     res.status(200).json(mockData.serviceStatus);
   }
 });
@@ -287,6 +277,7 @@ app.get('/api/admin/blessings', async (req, res) => {
     res.status(200).json(blessing);
   } catch (error) {
     console.error('Error getting blessings data from MongoDB, using mock data:', error.message);
+    // Return mock data only if MongoDB is unavailable
     res.status(200).json(mockData.blessing);
   }
 });
@@ -302,6 +293,7 @@ app.get('/api/admin/temples', async (req, res) => {
     });
   } catch (error) {
     console.error('Error getting temples data from MongoDB, using mock data:', error.message);
+    // Return mock data only if MongoDB is unavailable
     res.status(200).json({
       temples: mockData.temples,
       totalCount: mockData.temples.length,
@@ -322,6 +314,7 @@ app.get('/api/admin/consultations', async (req, res) => {
     });
   } catch (error) {
     console.error('Error getting consultations data from MongoDB, using mock data:', error.message);
+    // Return mock data only if MongoDB is unavailable
     res.status(200).json({
       consultations: mockData.consultations,
       totalCount: mockData.consultations.length,
@@ -343,6 +336,7 @@ app.get('/api/admin/api-docs', async (req, res) => {
     });
   } catch (error) {
     console.error('Error getting API docs data from MongoDB, using mock data:', error.message);
+    // Return mock data only if MongoDB is unavailable
     res.status(200).json({
       apiDocs: mockData.apiDocs,
       totalCount: mockData.apiDocs.length
