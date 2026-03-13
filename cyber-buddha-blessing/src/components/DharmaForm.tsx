@@ -804,7 +804,7 @@ const DharmaForm: React.FC = () => {
                   imageUrl={resultData.imageUrl} 
                   title="Cyber Buddha Dharma Form" 
                   description="Check out my exclusive Cyber Buddha Dharma Form!" 
-                  pageUrl="https://your-vercel-domain" 
+                  pageUrl={window.location.href} 
                 />
               )}
             </div>

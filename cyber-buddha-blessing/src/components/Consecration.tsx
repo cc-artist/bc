@@ -533,7 +533,7 @@ const Consecration: React.FC = () => {
                         imageUrl={resultUrl} 
                         title="Cyber Buddha Consecration Result" 
                         description="Check out my Cyber Buddha Consecration result!" 
-                        pageUrl="https://your-vercel-domain" 
+                        pageUrl={window.location.href} 
                       />
                     )}
                   </div>
