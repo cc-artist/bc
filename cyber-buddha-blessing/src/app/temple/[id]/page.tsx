@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { Temple, temples as staticTemples } from '../../../data/TempleData';
 import ContactFormWrapper from '../../../components/ContactFormWrapper';
 import SocialShare from '../../../components/SocialShare';
+import PayPalButton from '../../../components/PayPalButton';
 
 // Generate dynamic metadata for each temple page
 export async function generateMetadata({ params }: { params: { id: string } }) {
@@ -250,28 +251,12 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
                 <div>
                   {/* PayPal Payment Button */}
                   <div className="w-full text-center">
-                    <form 
-                      action="https://www.paypal.com/ncp/payment/KWCN3QN74N4X4" 
-                      method="post" 
-                      target="_blank" 
-                      className="w-full"
-                    >
-                      <input 
-                        type="hidden" 
-                        name="item_name" 
-                        value={`Custom Tour Booking for ${temple.name}`} 
-                      />
-                      <input 
-                        type="hidden" 
-                        name="amount" 
-                        value="10000.00" 
-                      />
-                      <input 
-                        className="w-full text-center border-none rounded-lg px-6 py-4 font-medium bg-gradient-to-r from-[#FFD700] to-[#FF6B00] text-[#1D1D1F] font-inherit text-base leading-5 cursor-pointer transition-all duration-300 shadow-md hover:shadow-lg hover:from-[#FFD700]/90 hover:to-[#FF6B00]/90 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:from-[#FFD700] disabled:hover:to-[#FF6B00]"
-                        type="submit" 
-                        value="Pay $10,000 USD to Book" 
-                      />
-                    </form>
+                    <PayPalButton 
+                      amount="10000.00" 
+                      description={`Custom Tour Booking for ${temple.name}`} 
+                      name="Custom Tour Booking"
+                      className=""
+                    />
                   </div>
                   
                   <div className="flex justify-center items-center gap-1 mt-2">
