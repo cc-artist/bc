@@ -74,6 +74,11 @@ export default function TempleDetailPage({ params }: { params: { id: string } })
   
   return (
     <div className="min-h-screen bg-[#1D1D1F] text-[#F5F5F7] font-sans">
+      {/* PayPal SDK Script */}
+      <Script
+        src="https://www.paypal.com/sdk/js?client-id=sb&currency=USD"
+        strategy="afterInteractive"
+      />
       {/* Navigation */}
       <header className="sticky top-0 z-50 bg-[#1D1D1F]/80 backdrop-blur-md border-b border-[#8676B6]/30">
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
