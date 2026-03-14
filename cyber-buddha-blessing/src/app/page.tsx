@@ -212,7 +212,7 @@ export default function Home() {
             </div>
             <div>
               <h3 className="text-lg font-semibold mb-4 text-[#F5F5F7]">Contact Us</h3>
-              <p className="text-[#F5F5F7]/70">Email: 598994794@qq.com</p>
+              <p className="text-[#F5F5F7]/70">Email: cherry.hou@hotmail.com</p>
             </div>
           </div>
           <div className="mt-12 pt-8 border-t border-[#8676B6]/30 text-center text-[#F5F5F7]/50 text-sm">
