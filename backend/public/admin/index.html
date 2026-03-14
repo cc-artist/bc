@@ -2197,12 +2197,15 @@
         // Fetch data from API endpoints
         async function fetchData() {
             try {
+                // 使用相对路径，确保指向正确的API端点
+                const baseUrl = '';
+                
                 // Fetch dashboard data
-                const dashboardResponse = await fetch('/api/admin/dashboard');
+                const dashboardResponse = await fetch(`${baseUrl}/api/admin/dashboard`);
                 const dashboardData = await dashboardResponse.json();
                 
                 // Fetch payment data from API
-                const paymentsResponse = await fetch('/api/admin/payments');
+                const paymentsResponse = await fetch(`${baseUrl}/api/admin/payments`);
                 const paymentsData = await paymentsResponse.json();
                 
                 // Update payment data with real API data
