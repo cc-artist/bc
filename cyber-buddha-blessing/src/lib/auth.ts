@@ -91,6 +91,6 @@ export async function getCurrentUser() {
 }
 
 export async function isAdminAuthenticated() {
-  const session = await getAppSession();
+  const session = await getApiSession();
   return !!session?.user;
 }
