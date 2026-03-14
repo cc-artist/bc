@@ -100,7 +100,7 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({
             alert('Thank you for your booking! Your order has been confirmed.');
             console.log('Transaction completed by ' + details.payer.name.given_name);
             // You can also redirect to a success page here
-          }).catch(function(captureError) {
+          }).catch(function(captureError: any) {
             console.error('[PayPal] Error capturing order:', captureError);
             alert('Error processing your payment. Please contact customer service.');
           });
@@ -127,12 +127,16 @@ const PayPalButton: React.FC<PayPalButtonProps> = ({
         .catch((renderError: any) => {
           console.error('[PayPal] Error rendering button:', renderError);
           setIsLoading(false);
-          setError(`Error rendering PayPal button: ${renderError.message || 'Unknown error'}`);
+          // Check if renderError is an Error instance before accessing message
+          const errorMessage = renderError instanceof Error ? renderError.message : 'Unknown error';
+          setError(`Error rendering PayPal button: ${errorMessage}`);
         });
     } catch (renderError) {
       console.error('[PayPal] Unexpected error rendering button:', renderError);
       setIsLoading(false);
-      setError(`Unexpected error: ${renderError.message || 'Unknown error'}`);
+      // Check if renderError is an Error instance before accessing message
+      const errorMessage = renderError instanceof Error ? renderError.message : 'Unknown error';
+      setError(`Unexpected error: ${errorMessage}`);
     }
   };
 
