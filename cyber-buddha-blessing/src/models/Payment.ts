@@ -1,6 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose, { Document } from 'mongoose';
 
-const PaymentSchema = new mongoose.Schema({
+// 定义Payment文档类型
+interface PaymentDocument extends Document {
+  id: string;
+  user: string;
+  amount: number;
+  status: 'completed' | 'pending' | 'failed' | 'cancelled' | 'refunded';
+  paymentPlatform: 'paypal' | 'pingpong' | 'unknown';
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const PaymentSchema = new mongoose.Schema<PaymentDocument>({
   id: {
     type: String,
     required: true,
@@ -36,12 +47,6 @@ const PaymentSchema = new mongoose.Schema({
 });
 
 // 确保模型不会被重复定义
-let Payment;
-
-if (mongoose.models.Payment) {
-  Payment = mongoose.models.Payment;
-} else {
-  Payment = mongoose.model('Payment', PaymentSchema);
-}
+const Payment = mongoose.models.Payment as mongoose.Model<PaymentDocument> || mongoose.model<PaymentDocument>('Payment', PaymentSchema);
 
 export default Payment;
