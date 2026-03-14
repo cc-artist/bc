@@ -197,7 +197,7 @@ export default function Home() {
                 <h3 className="text-lg font-bold">Cyber Buddha</h3>
               </div>
               <p className="text-[#F5F5F7]/70">
-                Blending traditional culture with modern technology to bring you a unique digital meditation experience
+                Blending traditional culture with modern AI technology to bring you a unique digital meditation experience
               </p>
             </div>
             <div>
