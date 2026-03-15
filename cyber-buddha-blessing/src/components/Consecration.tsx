@@ -347,7 +347,7 @@ const Consecration: React.FC = () => {
 
   return (
     <div className="bg-[#1D1D1F] border border-[#8676B6]/30 rounded-xl p-6 shadow-lg">
-      <h2 className="text-2xl font-bold mb-6 text-[#F5F5F7]">Cyber Buddha Consecration</h2>
+      <h2 className="text-2xl font-bold mb-6 text-[#F5F5F7]">Cyber Buddha Digital Blessing</h2>
       
       <div className="space-y-6">
         {/* Upload Area */}
@@ -531,8 +531,8 @@ const Consecration: React.FC = () => {
                     {resultUrl && (
                       <SocialShare 
                         imageUrl={resultUrl} 
-                        title="Cyber Buddha Consecration Result" 
-                        description="Check out my Cyber Buddha Consecration result!" 
+                        title="Cyber Buddha Digital Blessing Result" 
+                        description="Check out my Cyber Buddha Digital Blessing result!" 
                         pageUrl={window.location.href} 
                       />
                     )}
@@ -574,7 +574,7 @@ const Consecration: React.FC = () => {
               className="bg-[#8676B6] hover:bg-[#8676B6]/90 text-white px-8 py-4 rounded-full font-medium text-lg shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
               onClick={handleUpload}
             >
-              Start Consecration
+              Start Digital Blessing
             </button>
           </div>
         )}

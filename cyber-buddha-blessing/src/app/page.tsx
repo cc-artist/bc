@@ -125,7 +125,7 @@ export default function Home() {
             Cyber Buddha
           </h1>
           <p className="text-2xl md:text-3xl mb-10 text-[#F5F5F7]/90">
-            Cyber Buddha Consecration · Dharma Form · Lamp Blessing · Custom Tours of Famous Chinese Temples
+            Cyber Buddha Digital Blessing · Dharma Form · Lamp Blessing · Custom Tours of Famous Chinese Temples
           </p>
 
         </div>
@@ -142,7 +142,7 @@ export default function Home() {
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${activeTab === 'blessing' ? 'bg-[#8676B6] text-white shadow-lg' : 'bg-[#1D1D1F]/50 border border-[#8676B6]/30 text-[#8676B6] hover:border-[#8676B6]/60'}`}
                 onMouseEnter={() => setActiveTab('blessing')}
               >
-                Cyber Buddha Consecration
+                Cyber Buddha Digital Blessing
               </button>
               <button
                 className={`px-6 py-3 rounded-full font-medium transition-all duration-300 ${activeTab === 'dharma' ? 'bg-[#8676B6] text-white shadow-lg' : 'bg-[#1D1D1F]/50 border border-[#8676B6]/30 text-[#8676B6] hover:border-[#8676B6]/60'}`}
@@ -204,7 +204,7 @@ export default function Home() {
               <h3 className="text-lg font-semibold mb-4 text-[#F5F5F7]">Quick Links</h3>
               <ul className="space-y-2">
                 <li><a href="#" className="text-[#F5F5F7]/70 hover:text-[#8676B6] transition-colors duration-300">Home</a></li>
-                <li><a href="#" className="text-[#F5F5F7]/70 hover:text-[#8676B6] transition-colors duration-300">Cyber Buddha Consecration</a></li>
+                <li><a href="#" className="text-[#F5F5F7]/70 hover:text-[#8676B6] transition-colors duration-300">Cyber Buddha Digital Blessing</a></li>
                 <li><a href="#" className="text-[#F5F5F7]/70 hover:text-[#8676B6] transition-colors duration-300">Request Dharma Form</a></li>
                 <li><a href="#" className="text-[#F5F5F7]/70 hover:text-[#8676B6] transition-colors duration-300">Lamp Blessing</a></li>
                 <li><a href="#" className="text-[#F5F5F7]/70 hover:text-[#8676B6] transition-colors duration-300">Custom Temple Tours</a></li>
